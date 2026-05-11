@@ -17,7 +17,6 @@
             display: flex; justify-content: center; align-items: center; min-height: 100vh;
         }
 
-        /* TELEFON ÇERÇEVESİ */
         .phone {
             width: 100%; max-width: 400px; height: 820px;
             background: var(--bg); border: 12px solid #1a1a1a;
@@ -25,33 +24,26 @@
             box-shadow: 0 0 100px rgba(0,0,0,1);
         }
 
-        /* --- 1. LOGIN EKRANI --- */
+        /* --- LOGIN EKRANI --- */
         #login-screen {
             position: absolute; inset: 0; background: var(--bg); z-index: 2000;
             display: flex; flex-direction: column; justify-content: center; padding: 40px;
             background-image: radial-gradient(circle at top, var(--sec), transparent);
         }
-        .login-box { text-align: center; }
-        .logo { font-size: 40px; font-weight: 900; letter-spacing: -2px; margin-bottom: 5px; }
+        .logo { font-size: 40px; font-weight: 900; letter-spacing: -2px; text-align: center; }
         .logo span { color: var(--accent); }
-        .input-group { margin: 30px 0; }
         .input { 
             width: 100%; background: #111; border: 1px solid var(--border);
-            padding: 18px; border-radius: 15px; color: #fff; text-align: center; font-size: 16px; outline: none;
+            padding: 18px; border-radius: 15px; color: #fff; text-align: center; margin: 20px 0; outline: none;
         }
-        .input:focus { border-color: var(--accent); }
         .btn { 
             background: var(--accent); color: #000; border: none; width: 100%; 
-            padding: 18px; border-radius: 15px; font-weight: 800; cursor: pointer; transition: 0.2s;
+            padding: 18px; border-radius: 15px; font-weight: 800; cursor: pointer;
         }
-        .btn:active { transform: scale(0.95); }
 
-        /* --- 2. ANA UYGULAMA --- */
+        /* --- ANA UYGULAMA --- */
         #app { display: none; height: 100%; flex-direction: column; }
-
-        /* Üst Panel (Para & Kullanıcı) */
         .top-nav { padding: 25px 20px 15px; display: flex; justify-content: space-between; align-items: center; }
-        .user-info { font-size: 14px; font-weight: 600; color: var(--accent); }
         .wallet-stats { 
             background: var(--card); border: 1px solid var(--border); 
             padding: 15px; margin: 0 20px; border-radius: 20px;
@@ -59,46 +51,39 @@
         }
         .stat b { display: block; font-size: 16px; color: #fff; }
 
-        /* İçerik Alanı */
         .main-scroll { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 100px; }
-        .section-title { font-size: 12px; opacity: 0.5; letter-spacing: 2px; margin-bottom: 15px; margin-top: 20px; }
+        .section-title { font-size: 11px; opacity: 0.5; letter-spacing: 2px; margin-bottom: 15px; }
 
-        /* Meyve Kartları */
+        /* Kartlar ve Buton */
         .fruit-card {
             background: var(--card); border: 1px solid var(--border);
-            padding: 15px; border-radius: 20px; display: flex; align-items: center; gap: 15px; margin-bottom: 12px;
+            padding: 15px; border-radius: 20px; display: flex; align-items: center; gap: 12px; margin-bottom: 12px;
         }
         .f-icon { width: 50px; height: 50px; background: #000; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
-        .f-details b { font-size: 15px; }
-        .f-details p { margin: 0; font-size: 10px; opacity: 0.6; }
-        .f-price { margin-left: auto; text-align: right; font-size: 12px; color: var(--accent); font-weight: 700; }
+        .add-cart { background: var(--accent); color: #000; border: none; border-radius: 8px; padding: 5px 10px; font-weight: bold; cursor: pointer; font-size: 10px; margin-left: auto; }
 
-        /* --- 3. PANELLER (TAKAS & PROFİL) --- */
+        /* --- PANELLER --- */
         .panel {
             position: absolute; inset: 0; background: var(--bg); z-index: 1500;
             transform: translateY(100%); transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             padding: 30px;
         }
         .panel.active { transform: translateY(0); }
-        .close-p { font-size: 30px; color: var(--accent); cursor: pointer; margin-bottom: 20px; }
+        .close-p { font-size: 30px; color: var(--accent); cursor: pointer; margin-bottom: 15px; }
 
-        /* Takas Listesi */
-        .trade-list { 
-            background: #111; border: 1px solid #222; border-radius: 20px; 
-            height: 250px; overflow-y: auto; padding: 15px; margin-bottom: 15px;
-        }
-        .trade-msg { font-size: 13px; margin-bottom: 8px; color: #ddd; }
-        .trade-msg b { color: var(--accent); }
+        /* Sepet Listesi */
+        .cart-list { max-height: 450px; overflow-y: auto; margin-bottom: 20px; }
+        .cart-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
 
-        /* --- 4. ALT NAV --- */
+        /* NAV */
         nav {
-            position: absolute; bottom: 25px; left: 20px; right: 20px;
+            position: absolute; bottom: 25px; left: 15px; right: 15px;
             background: rgba(15,15,15,0.85); backdrop-filter: blur(20px);
             border: 1px solid var(--border); border-radius: 25px;
             display: flex; justify-content: space-around; padding: 18px; z-index: 1000;
         }
         .nav-icon { font-size: 22px; cursor: pointer; opacity: 0.4; transition: 0.3s; }
-        .nav-icon.active { opacity: 1; color: var(--accent); transform: translateY(-5px); }
+        .nav-icon.active { opacity: 1; color: var(--accent); }
     </style>
 </head>
 <body>
@@ -106,134 +91,140 @@
 <div class="phone">
     
     <div id="login-screen">
-        <div class="login-box">
-            <div class="logo">BLOX<span>PRO</span></div>
-            <p style="font-size: 12px; opacity: 0.6;">2026 Global Trading Hub</p>
-            <div class="input-group">
-                <input type="text" id="username" class="input" placeholder="Roblox Kullanıcı Adı">
-            </div>
-            <button class="btn" onclick="login()">SİSTEME GİRİŞ YAP</button>
-        </div>
+        <div class="logo">BLOX<span>PRO</span></div>
+        <input type="text" id="username" class="input" placeholder="Roblox Kullanıcı Adı">
+        <button class="btn" onclick="login()">SİSTEME GİR</button>
     </div>
 
     <div id="app">
         <div class="top-nav">
-            <div class="user-info" id="display-name">@User</div>
-            <div style="font-size: 18px;">🔔</div>
+            <div id="display-name" style="color:var(--accent);">@User</div>
+            <div style="font-size: 18px; cursor:pointer;" onclick="showPanel('cart')">🛒 <span id="cart-count" style="font-size:12px; color:var(--accent);">0</span></div>
         </div>
 
         <div class="wallet-stats">
             <div class="stat">Beli <b>12.5M</b></div>
-            <div class="stat">BC Coin <b style="color:var(--accent);" id="bc-coin">450</b></div>
+            <div class="stat">BC Coin <b style="color:var(--accent);">450</b></div>
             <div class="stat">Robux <b>1,250</b></div>
         </div>
 
         <div class="main-scroll">
-            <div class="section-title">GÜNCEL STOKLAR (2026)</div>
+            <div class="section-title">MARKET STOKLARI</div>
             <div id="market-list"></div>
         </div>
 
         <nav>
             <div class="nav-icon active" onclick="showPanel('main')">🏠</div>
             <div class="nav-icon" onclick="showPanel('trade')">🔄</div>
-            <div class="nav-icon" onclick="showPanel('wheel')">🎡</div>
+            <div class="nav-icon" onclick="showPanel('cart')">🛒</div>
             <div class="nav-icon" onclick="showPanel('profile')">👤</div>
         </nav>
     </div>
 
     <div id="trade-panel" class="panel">
         <div class="close-p" onclick="showPanel('main')">×</div>
-        <h2>Takas <span>Masası</span></h2>
-        <div class="trade-list" id="trade-box">
-            <div class="trade-msg"><b>Sistem:</b> Masaya meyve eklemek için aşağıyı kullan.</div>
+        <h2>Takas Masası</h2>
+        <div id="trade-box" style="height:200px; background:#111; padding:15px; border-radius:15px; overflow-y:auto; font-size:12px; margin-bottom:10px;"></div>
+        <input type="text" id="t-input" class="input" placeholder="Meyve adı...">
+        <button class="btn" onclick="addToTrade()">EKLE</button>
+    </div>
+
+    <div id="cart-panel" class="panel">
+        <div class="close-p" onclick="showPanel('main')">×</div>
+        <h2>Sepetim</h2>
+        <div class="cart-list" id="cart-items">
+            <p style="opacity:0.4;">Sepetiniz şu an boş.</p>
         </div>
-        <input type="text" id="t-input" class="input" placeholder="Meyve adı..." style="text-align:left; margin-bottom:10px;">
-        <button class="btn" onclick="addToTrade()">MEYVEYİ KOY</button>
+        <div style="border-top:1px solid var(--border); padding-top:15px;">
+            <div style="display:flex; justify-content:space-between;"><span>Toplam:</span> <b id="cart-total" style="color:var(--accent);">0 B$</b></div>
+            <button class="btn" style="margin-top:15px;" onclick="alert('Satın alma başarılı!')">SATIN AL</button>
+        </div>
     </div>
 
     <div id="profile-panel" class="panel">
         <div class="close-p" onclick="showPanel('main')">×</div>
         <center>
-            <div style="width:90px; height:90px; background:linear-gradient(var(--accent), var(--sec)); border-radius:50%; margin-bottom:15px; display:flex; align-items:center; justify-content:center; font-size:40px; color:black; font-weight:900;" id="p-avatar">?</div>
-            <h2 id="p-user">User</h2>
-            <div style="background:var(--card); padding:20px; border-radius:20px; margin-top:20px; text-align:left;">
-                <p>Level: <b>2550 (Max)</b></p>
-                <p>Üyelik: <b style="color:var(--accent);">Premium Elite</b></p>
-                <p>Katılım: <b>Mayıs 2026</b></p>
-            </div>
-            <button class="btn" style="margin-top:50px; background:#ff3232; color:#fff;" onclick="location.reload()">GÜVENLİ ÇIKIŞ</button>
-        </center>
-    </div>
-
-    <div id="wheel-panel" class="panel">
-        <div class="close-p" onclick="showPanel('main')">×</div>
-        <center>
-            <h2>Günlük <span>Çark</span></h2>
-            <div style="width:200px; height:200px; border:5px dashed var(--accent); border-radius:50%; margin:40px 0; display:flex; align-items:center; justify-content:center; font-size:14px; opacity:0.5;">
-                YAKINDA...
-            </div>
-            <button class="btn" disabled style="opacity:0.5;">ÇEVİR (24S)</button>
+            <div id="p-avatar" style="width:80px; height:80px; background:var(--accent); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:35px; color:black; font-weight:900;">?</div>
+            <h2 id="p-user" style="margin-top:15px;">User</h2>
+            <button class="btn" style="margin-top:100px; background:red; color:#fff;" onclick="location.reload()">ÇIKIŞ YAP</button>
         </center>
     </div>
 
 </div>
 
 <script>
+    let cart = [];
+
     function login() {
         const user = document.getElementById('username').value;
         if(user.length < 3) return alert("Geçerli bir isim gir!");
-
         document.getElementById('login-screen').style.display = "none";
         document.getElementById('app').style.display = "flex";
         document.getElementById('display-name').innerText = "@" + user;
         document.getElementById('p-user').innerText = user;
         document.getElementById('p-avatar').innerText = user[0].toUpperCase();
-        
         loadMarket();
     }
 
     function loadMarket() {
-        // GERÇEK 2026 VERİLERİ
         const fruits = [
-            {n: "Dragon (Rework)", p: "10,000,000 B$", e: "🐉", s: 0},
-            {n: "Kitsune", p: "8,000,000 B$", e: "🦊", s: 0},
-            {n: "Portal", p: "1,900,000 B$", e: "🌀", s: 1},
-            {n: "Yerçekimi", p: "2,500,000 B$", e: "🌌", s: 1},
-            {n: "Aşk (Love)", p: "1,300,000 B$", e: "💝", s: 1},
-            {n: "Magma", p: "850,000 B$", e: "🌋", s: 1},
-            {n: "Işık (Light)", p: "650,000 B$", e: "✨", s: 1},
-            {n: "Quake", p: "1,000,000 B$", e: "🫨", s: 1}
+            {n: "Dragon", p: 10000000, ps: "10M", e: "🐉"},
+            {n: "Kitsune", p: 8000000, ps: "8M", e: "🦊"},
+            {n: "Portal", p: 1900000, ps: "1.9M", e: "🌀"},
+            {n: "Light", p: 650000, ps: "650K", e: "✨"},
+            {n: "Magma", p: 850000, ps: "850K", e: "🌋"}
         ];
-        
         const list = document.getElementById('market-list');
         list.innerHTML = "";
         fruits.forEach(f => {
             list.innerHTML += `
                 <div class="fruit-card">
                     <div class="f-icon">${f.e}</div>
-                    <div class="f-details">
-                        <b>${f.n}</b>
-                        <p style="color:${f.s ? '#00ffa3' : '#ff3232'}">${f.s ? 'Stokta (1)' : 'Tükendi (0)'}</p>
-                    </div>
-                    <div class="f-price">${f.p}</div>
-                </div>
-            `;
+                    <div><b>${f.n}</b><br><small>${f.ps} B$</small></div>
+                    <button class="add-cart" onclick="addToCart('${f.n}', ${f.p})">EKLE</button>
+                </div>`;
         });
+    }
+
+    function addToCart(name, price) {
+        cart.push({name, price});
+        updateCart();
+    }
+
+    function updateCart() {
+        const list = document.getElementById('cart-items');
+        const count = document.getElementById('cart-count');
+        const totalDisp = document.getElementById('cart-total');
+        count.innerText = cart.length;
+        
+        if(cart.length === 0) {
+            list.innerHTML = `<p style="opacity:0.4;">Sepetiniz şu an boş.</p>`;
+            totalDisp.innerText = "0 B$";
+            return;
+        }
+
+        let total = 0;
+        list.innerHTML = "";
+        cart.forEach((item, index) => {
+            total += item.price;
+            list.innerHTML += `
+                <div class="cart-item">
+                    <span>${item.name}</span>
+                    <span>${item.price.toLocaleString()} B$</span>
+                </div>`;
+        });
+        totalDisp.innerText = total.toLocaleString() + " B$";
     }
 
     function showPanel(id) {
         document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
         document.querySelectorAll('.nav-icon').forEach(i => i.classList.remove('active'));
+        if(id !== 'main') document.getElementById(id + '-panel').classList.add('active');
         
-        if(id !== 'main') {
-            document.getElementById(id + '-panel').classList.add('active');
-        }
-        
-        // Nav ikonunu aktif yap (basit mantık)
         const icons = document.querySelectorAll('.nav-icon');
         if(id === 'main') icons[0].classList.add('active');
         if(id === 'trade') icons[1].classList.add('active');
-        if(id === 'wheel') icons[2].classList.add('active');
+        if(id === 'cart') icons[2].classList.add('active');
         if(id === 'profile') icons[3].classList.add('active');
     }
 
@@ -241,13 +232,10 @@
         const inp = document.getElementById('t-input');
         const box = document.getElementById('trade-box');
         if(inp.value) {
-            const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-            box.innerHTML += `<div class="trade-msg"><span>[${time}]</span> <b>Siz:</b> ${inp.value} eklendi.</div>`;
-            box.scrollTop = box.scrollHeight;
+            box.innerHTML += `<div><b>Siz:</b> ${inp.value} eklendi.</div>`;
             inp.value = "";
         }
     }
 </script>
-
 </body>
 </html>
