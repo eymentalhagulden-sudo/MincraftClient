@@ -3,129 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blox Shop 2026 | Güncel Fiyatlar</title>
+    <title>Blox Fruits Store 2026</title>
     <style>
         :root {
-            --neon-blue: #00d4ff;
-            --mythical-purple: #a335ee;
-            --legendary-pink: #eb4b98;
-            --bg-dark: #0a0e14;
+            --mythical: #a335ee;
+            --legendary: #eb4b98;
+            --rare: #0070dd;
+            --bg: #050505;
+            --card-bg: #121212;
+            --accent: #00ffcc;
         }
 
         body {
-            margin: 0; background: var(--bg-dark); color: white;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0; background: var(--bg); color: white;
+            font-family: 'Segoe UI', sans-serif;
             display: flex; justify-content: center;
         }
 
-        .shop-container {
-            width: 100%; max-width: 480px; padding: 20px;
+        /* Siteyi ortalayan ve sınırlayan ana kutu */
+        .app {
+            width: 100%; max-width: 450px;
+            background: #000; min-height: 100vh;
+            border-left: 1px solid #222; border-right: 1px solid #222;
+            position: relative; padding-bottom: 80px;
         }
 
+        /* Üst Menü */
         header {
-            text-align: center; border-bottom: 2px solid var(--neon-blue);
-            padding-bottom: 15px; margin-bottom: 20px;
+            padding: 20px; text-align: center;
+            background: linear-gradient(to bottom, #111, #000);
+            border-bottom: 2px solid var(--accent);
         }
 
-        header h1 { margin: 0; font-size: 28px; color: var(--neon-blue); text-transform: uppercase; }
+        header h1 { margin: 0; font-size: 24px; color: var(--accent); letter-spacing: 2px; }
         header p { margin: 5px 0 0; font-size: 12px; color: #888; }
 
+        /* Stok Zamanlayıcı */
+        .stock-bar {
+            background: #1a1a1a; padding: 10px; margin: 10px;
+            border-radius: 8px; font-size: 13px; text-align: center;
+            border: 1px dashed var(--accent);
+        }
+
+        /* Meyve Listesi */
+        .store-grid { padding: 15px; display: flex; flex-direction: column; gap: 15px; }
+
         .fruit-card {
-            background: #161b22; border-radius: 12px; padding: 15px;
-            margin-bottom: 15px; display: flex; align-items: center;
-            border: 1px solid #30363d; position: relative;
+            background: var(--card-bg); border-radius: 15px;
+            overflow: hidden; border: 1px solid #222;
+            display: flex; flex-direction: column;
             transition: 0.3s;
         }
 
-        .fruit-card:hover { transform: scale(1.02); border-color: var(--neon-blue); }
+        .fruit-card:hover { border-color: var(--accent); transform: translateY(-3px); }
 
-        .fruit-icon {
-            width: 60px; height: 60px; border-radius: 10px;
-            background: #21262d; margin-right: 15px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 30px;
+        /* Meyve Resmi */
+        .fruit-img {
+            width: 100%; height: 180px; object-fit: cover;
+            background: #1a1a1a;
         }
 
-        .fruit-info { flex-grow: 1; }
-        .fruit-info h3 { margin: 0; font-size: 18px; }
-        .rarity { font-size: 11px; text-transform: uppercase; font-weight: bold; }
+        .fruit-details { padding: 15px; }
 
-        .prices { text-align: right; }
-        .beli { color: #4ade80; font-weight: bold; font-size: 14px; }
-        .robux { color: #fbbf24; font-size: 12px; margin-top: 4px; }
-
-        /* Nadirlik Renkleri */
-        .mythical { color: var(--mythical-purple); }
-        .legendary { color: var(--legendary-pink); }
-        .rare { color: #3b82f6; }
-
-        .buy-btn {
-            background: var(--neon-blue); color: black; border: none;
-            padding: 5px 15px; border-radius: 5px; font-weight: bold;
-            margin-top: 8px; cursor: pointer; width: 100%;
+        .rarity-tag {
+            font-size: 10px; font-weight: bold; text-transform: uppercase;
+            padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px;
         }
 
-        .stock-timer {
-            text-align: center; font-size: 13px; background: #238636;
-            padding: 8px; border-radius: 5px; margin-bottom: 20px;
+        .mythical { background: var(--mythical); }
+        .legendary { background: var(--legendary); }
+        .rare { background: var(--rare); }
+
+        .fruit-name { font-size: 20px; margin: 0; font-weight: bold; }
+        
+        .price-row {
+            display: flex; justify-content: space-between; margin-top: 12px;
+            padding-top: 12px; border-top: 1px solid #222;
         }
+
+        .price-item { display: flex; flex-direction: column; }
+        .price-label { font-size: 10px; color: #777; text-transform: uppercase; }
+        .price-val { font-weight: bold; font-size: 15px; }
+        .beli { color: #4ade80; }
+        .robux { color: #fbbf24; }
+
+        .buy-button {
+            width: 100%; background: var(--accent); color: #000;
+            border: none; padding: 12px; margin-top: 15px;
+            border-radius: 8px; font-weight: bold; cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .buy-button:active { transform: scale(0.95); opacity: 0.8; }
+
+        /* Alt Navigasyon */
+        .nav-bottom {
+            position: fixed; bottom: 0; width: 100%; max-width: 450px;
+            background: rgba(0,0,0,0.9); backdrop-filter: blur(10px);
+            display: flex; justify-content: space-around; padding: 15px 0;
+            border-top: 1px solid #222;
+        }
+
+        .nav-btn { color: #888; text-decoration: none; font-size: 12px; text-align: center; }
+        .nav-btn.active { color: var(--accent); }
     </style>
 </head>
 <body>
 
-<div class="shop-container">
+<div class="app">
     <header>
-        <h1>BLOX SHOP</h1>
-        <p>Mayıs 2026 - Resmi Market Fiyatları</p>
+        <h1>BLOX MARKET</h1>
+        <p>GÜNCEL 2026 VERİLERİ (V2.6)</p>
     </header>
 
-    <div class="stock-timer">
-        Stokların Yenilenmesine: <span id="timer">03:45:12</span>
+    <div class="stock-bar">
+        STOK YENİLENMESİ: <span id="timer" style="color: var(--accent);">02:14:55</span>
     </div>
 
-    <div id="market">
-        <!-- Meyveler Buraya Gelecek -->
+    <div class="store-grid">
+        
+        <div class="fruit-card">
+            <img src="https://api.dicebear.com/7.x/identicon/svg?seed=dragon" class="fruit-img" alt="Dragon">
+            <div class="fruit-details">
+                <div class="rarity-tag mythical">Mythical</div>
+                <h3 class="fruit-name">Dragon (Rework)</h3>
+                <div class="price-row">
+                    <div class="price-item">
+                        <span class="price-label">Beli Fiyatı</span>
+                        <span class="price-val beli">10.000.000 B$</span>
+                    </div>
+                    <div class="price-item">
+                        <span class="price-label">Robux Fiyatı</span>
+                        <span class="price-val robux">5.000 R$</span>
+                    </div>
+                </div>
+                <button class="buy-button">SATIN AL</button>
+            </div>
+        </div>
+
+        <div class="fruit-card">
+            <img src="https://api.dicebear.com/7.x/identicon/svg?seed=kitsune" class="fruit-img" alt="Kitsune">
+            <div class="fruit-details">
+                <div class="rarity-tag mythical">Mythical</div>
+                <h3 class="fruit-name">Kitsune</h3>
+                <div class="price-row">
+                    <div class="price-item">
+                        <span class="price-label">Beli Fiyatı</span>
+                        <span class="price-val beli">8.000.000 B$</span>
+                    </div>
+                    <div class="price-item">
+                        <span class="price-label">Robux Fiyatı</span>
+                        <span class="price-val robux">4.000 R$</span>
+                    </div>
+                </div>
+                <button class="buy-button">SATIN AL</button>
+            </div>
+        </div>
+
+        <div class="fruit-card">
+            <img src="https://api.dicebear.com/7.x/identicon/svg?seed=buddha" class="fruit-img" alt="Buddha">
+            <div class="fruit-details">
+                <div class="rarity-tag legendary">Legendary</div>
+                <h3 class="fruit-name">Buddha</h3>
+                <div class="price-row">
+                    <div class="price-item">
+                        <span class="price-label">Beli Fiyatı</span>
+                        <span class="price-val beli">1.200.000 B$</span>
+                    </div>
+                    <div class="price-item">
+                        <span class="price-label">Robux Fiyatı</span>
+                        <span class="price-val robux">1.650 R$</span>
+                    </div>
+                </div>
+                <button class="buy-button">SATIN AL</button>
+            </div>
+        </div>
+
+        </div>
+
+    <div class="nav-bottom">
+        <a href="#" class="nav-btn active">🏠<br>Market</a>
+        <a href="#" class="nav-btn">🔄<br>Takas</a>
+        <a href="#" class="nav-btn">🛡️<br>Klan</a>
+        <a href="#" class="nav-btn">👤<br>Profil</a>
     </div>
 </div>
 
 <script>
-    const fruits = [
-        { name: "Kitsune", rarity: "Mythical", beli: "8,000,000", robux: "4,000", emoji: "🦊", type: "mythical" },
-        { name: "Dragon (Rework)", rarity: "Mythical", beli: "10,000,000", robux: "5,000", emoji: "🐉", type: "mythical" },
-        { name: "Leopard", rarity: "Mythical", beli: "5,000,000", robux: "3,000", emoji: "🐆", type: "mythical" },
-        { name: "Dough", rarity: "Mythical", beli: "2,800,000", robux: "2,400", emoji: "🍩", type: "mythical" },
-        { name: "T-Rex", rarity: "Mythical", beli: "2,700,000", robux: "2,350", emoji: "🦖", type: "mythical" },
-        { name: "Mammoth", rarity: "Mythical", beli: "2,700,000", robux: "2,350", emoji: "🦣", type: "mythical" },
-        { name: "Portal", rarity: "Legendary", beli: "1,900,000", robux: "2,000", emoji: "🌀", type: "legendary" },
-        { name: "Buddha", rarity: "Legendary", beli: "1,200,000", robux: "1,650", emoji: "🧘", type: "legendary" },
-        { name: "Magma", rarity: "Rare", beli: "850,000", robux: "1,300", emoji: "🌋", type: "rare" },
-        { name: "Light", rarity: "Rare", beli: "650,000", robux: "1,100", emoji: "✨", type: "rare" }
-    ];
-
-    const market = document.getElementById('market');
-
-    fruits.forEach(f => {
-        market.innerHTML += `
-            <div class="fruit-card">
-                <div class="fruit-icon">${f.emoji}</div>
-                <div class="fruit-info">
-                    <span class="rarity ${f.type}">${f.rarity}</span>
-                    <h3>${f.name}</h3>
-                    <button class="buy-btn">SATIN AL</button>
-                </div>
-                <div class="prices">
-                    <div class="beli">B$ ${f.beli}</div>
-                    <div class="robux">R$ ${f.robux}</div>
-                </div>
-            </div>
-        `;
+    // Basit bir satın alma uyarısı
+    document.querySelectorAll('.buy-button').forEach(btn => {
+        btn.addEventListener('click', () => {
+            alert('2026 Sunucu Hatası: Cüzdanınızda yeterli Robux bulunamadı!');
+        });
     });
-
-    // Basit bir geri sayım efekti
-    setInterval(() => {
-        let timer = document.getElementById('timer');
-        // Burada gerçek bir geri sayım mantığı eklenebilir
-    }, 1000);
 </script>
 
 </body>
