@@ -3,210 +3,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Blox Trade Pro 2026</title>
+    <title>Blox Pro 2026 | Secure</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --accent: #00ffa3;
-            --glass: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.1);
-            --bg: #050505;
-        }
+        :root { --accent: #00ffa3; --bg: #050505; --glass: rgba(255,255,255,0.03); --border: rgba(255,255,255,0.1); }
+        * { box-sizing: border-box; }
+        body { margin: 0; background: var(--bg); color: white; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
 
-        * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-        body {
-            margin: 0; background: var(--bg); color: white;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            overflow-x: hidden;
-        }
+        .container { width: 100%; max-width: 480px; margin: 0 auto; min-height: 100vh; position: relative; }
 
-        .container {
-            width: 100%; max-width: 480px; margin: 0 auto;
-            min-height: 100vh; position: relative;
-            background: radial-gradient(circle at top right, #0a1a15, #050505);
+        /* --- LOGIN EKRANI --- */
+        #login-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg); z-index: 2000; display: flex; flex-direction: column;
+            justify-content: center; padding: 40px; text-align: center;
         }
+        .login-box { background: var(--glass); border: 1px solid var(--border); padding: 30px; border-radius: 25px; backdrop-filter: blur(10px); }
+        .login-input { width: 100%; background: #111; border: 1px solid #333; padding: 15px; border-radius: 12px; color: white; margin: 20px 0; outline: none; text-align: center; font-size: 16px; }
+        .login-input:focus { border-color: var(--accent); }
+        .login-btn { background: var(--accent); color: black; border: none; width: 100%; padding: 15px; border-radius: 12px; font-weight: 800; cursor: pointer; }
+        .loader { display: none; margin-top: 15px; color: var(--accent); font-size: 12px; }
 
-        /* Modern Header */
-        header {
-            padding: 30px 20px;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .logo { font-weight: 800; font-size: 24px; letter-spacing: -1px; }
-        .logo span { color: var(--accent); text-shadow: 0 0 15px var(--accent); }
+        /* --- ANA İÇERİK --- */
+        .content { display: none; } /* Giriş yapmadan görünmez */
 
-        /* Stok Kartları */
-        .grid { padding: 0 20px; display: grid; gap: 15px; }
-        .card {
-            background: var(--glass);
-            border: 1px solid var(--border);
-            border-radius: 20px; padding: 15px;
-            display: flex; align-items: center; gap: 15px;
-            backdrop-filter: blur(10px);
-            transition: 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
-        .card:active { transform: scale(0.96); background: rgba(255,255,255,0.08); }
+        header { padding: 30px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-weight: 800; font-size: 24px; }
+        .logo span { color: var(--accent); }
 
-        .fruit-icon {
-            width: 65px; height: 65px; border-radius: 15px;
-            background: linear-gradient(45deg, #111, #222);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 28px; border: 1px solid var(--border);
-        }
+        .grid { padding: 0 20px; display: grid; gap: 15px; padding-bottom: 100px; }
+        .card { background: var(--glass); border: 1px solid var(--border); border-radius: 20px; padding: 15px; display: flex; align-items: center; gap: 15px; }
+        .fruit-icon { width: 60px; height: 60px; border-radius: 15px; background: #111; display: flex; align-items: center; justify-content: center; font-size: 24px; border: 1px solid var(--border); }
+        .status { font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 6px; display: inline-block; margin-top: 6px; background: rgba(0, 255, 163, 0.1); color: var(--accent); }
 
-        .details h3 { margin: 0; font-size: 16px; font-weight: 600; }
-        .status {
-            font-size: 10px; font-weight: 700; padding: 4px 8px;
-            border-radius: 6px; display: inline-block; margin-top: 6px;
-        }
-        .in-stock { background: rgba(0, 255, 163, 0.1); color: var(--accent); }
-        .out-stock { background: rgba(255, 50, 50, 0.1); color: #ff3232; }
-
-        /* Alt Navigasyon */
-        nav {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 400px;
-            background: rgba(15, 15, 15, 0.8);
-            backdrop-filter: blur(20px); border: 1px solid var(--border);
-            border-radius: 25px; padding: 15px;
-            display: flex; justify-content: space-around; z-index: 100;
-        }
-        .nav-item { color: #555; font-size: 20px; cursor: pointer; transition: 0.3s; }
-        .nav-item.active { color: var(--accent); }
-
-        /* --- TAKAS PANELİ (SIDEBAR) --- */
-        #trade-panel {
-            position: fixed; top: 0; right: -100%; width: 100%; max-width: 480px;
-            height: 100%; background: #0a0a0a; z-index: 1000;
-            transition: 0.5s cubic-bezier(0.8, 0, 0.2, 1);
-            padding: 40px 25px; border-left: 1px solid var(--accent);
-        }
+        /* --- TAKAS PANELİ --- */
+        #trade-panel { position: fixed; top: 0; right: -100%; width: 100%; height: 100%; background: #0a0a0a; z-index: 1500; transition: 0.5s; padding: 40px 25px; }
         #trade-panel.open { right: 0; }
 
-        .close-trade { font-size: 30px; cursor: pointer; color: var(--accent); }
-        
-        .trade-box {
-            background: #111; border: 1px solid #222; border-radius: 20px;
-            padding: 20px; margin-top: 30px; text-align: center;
-        }
-        
-        .trade-input {
-            width: 100%; background: #1a1a1a; border: 1px solid #333;
-            padding: 15px; border-radius: 12px; color: white; margin-top: 20px;
-            font-family: inherit; outline: none;
-        }
-        .trade-input:focus { border-color: var(--accent); }
+        /* --- NAV --- */
+        nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; background: rgba(15,15,15,0.9); border: 1px solid var(--border); border-radius: 25px; padding: 15px; display: flex; justify-content: space-around; z-index: 100; }
+        .nav-item { color: #555; font-size: 20px; cursor: pointer; }
+        .nav-item.active { color: var(--accent); }
 
-        .btn-trade {
-            background: var(--accent); color: black; border: none;
-            width: 100%; padding: 15px; border-radius: 12px;
-            font-weight: 800; margin-top: 15px; cursor: pointer;
-        }
-
-        #trade-display {
-            margin-top: 30px; display: flex; flex-wrap: wrap; gap: 10px;
-        }
-        .offered-item {
-            background: var(--accent); color: black; padding: 8px 15px;
-            border-radius: 50px; font-size: 13px; font-weight: 700;
-            animation: pop 0.3s ease-out;
-        }
-
-        @keyframes pop {
-            0% { transform: scale(0); }
-            100% { transform: scale(1); }
-        }
+        /* --- PROFİL PANELİ --- */
+        #profile-panel { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #050505; z-index: 1400; display: none; padding: 40px; text-align: center; }
+        .user-pfp { width: 100px; height: 100px; border-radius: 50%; background: var(--accent); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 40px; color: black; font-weight: 800; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <header>
-        <div class="logo">BLOX<span>PRO</span></div>
-        <div style="font-size: 20px; opacity: 0.5;">⚡</div>
-    </header>
-
-    <div class="grid" id="fruit-grid">
+    <div id="login-screen">
+        <div class="login-box">
+            <h1 style="margin:0; font-size:24px;">Roblox Login</h1>
+            <p style="color:#666; font-size:12px; margin-top:5px;">Blox Pro 2026 Sistemine Giriş Yap</p>
+            <input type="text" id="username" class="login-input" placeholder="Roblox Kullanıcı Adı">
+            <button class="login-btn" onclick="handleLogin()">GİRİŞ YAP</button>
+            <div id="loading" class="loader">Roblox API Kontrol Ediliyor...</div>
         </div>
+    </div>
 
-    <nav>
-        <div class="nav-item active">🏠</div>
-        <div class="nav-item" onclick="toggleTrade()">🔄</div>
-        <div class="nav-item">👤</div>
-    </nav>
+    <div class="container content" id="app-content">
+        <header>
+            <div class="logo">BLOX<span>PRO</span></div>
+            <div id="user-tag" style="font-size: 12px; color: var(--accent);">@User</div>
+        </header>
+
+        <div class="grid" id="fruit-grid"></div>
+
+        <nav>
+            <div class="nav-item active" onclick="showSection('market')">🏠</div>
+            <div class="nav-item" onclick="toggleTrade()">🔄</div>
+            <div class="nav-item" onclick="showSection('profile')">👤</div>
+        </nav>
+    </div>
 
     <div id="trade-panel">
-        <div class="close-trade" onclick="toggleTrade()">×</div>
-        <h2 style="font-size: 32px; margin-top: 10px;">Takas <span>Pazarı</span></h2>
-        <p style="color: #666; font-size: 14px;">Karşı tarafın koyduğu meyveleri burada gör.</p>
-
-        <div class="trade-box">
-            <div style="font-size: 12px; color: var(--accent); margin-bottom: 10px;">ADAMIN KOYDUĞU MEYVELER</div>
-            <div id="trade-display">
-                <p id="empty-msg" style="color: #444; width: 100%;">Henüz meyve yok...</p>
-            </div>
+        <div onclick="toggleTrade()" style="font-size:30px; cursor:pointer;">×</div>
+        <h2>Takas <span>Pazarı</span></h2>
+        <div style="background:#111; padding:20px; border-radius:20px; border:1px solid #222; margin-top:20px;">
+            <p id="trade-user-info" style="font-size:12px; color:var(--accent);">Kullanıcı: -</p>
+            <div id="trade-list" style="margin-top:10px; display:flex; gap:5px; flex-wrap:wrap;"></div>
         </div>
-
-        <input type="text" id="fruit-input" class="trade-input" placeholder="Meyve ismi yaz (örn: Dragon)...">
-        <button class="btn-trade" onclick="addItem()">MEYVEYİ MASAYA KOY</button>
+        <input type="text" id="trade-input" class="login-input" style="text-align:left;" placeholder="Meyve ekle...">
+        <button class="login-btn" onclick="addTradeItem()">MASAYA KOY</button>
     </div>
-</div>
+
+    <div id="profile-panel">
+        <div onclick="showSection('market')" style="text-align:left; font-size:20px;">← Geri</div>
+        <div class="user-pfp" id="pfp-initial">M</div>
+        <h2 id="profile-name">RobloxUser</h2>
+        <p style="color:#666;">Level: 2550 (Max)</p>
+        <div style="background:var(--glass); padding:20px; border-radius:20px; margin-top:30px;">
+            <p>Beli: 25,000,000</p>
+            <p>Fragment: 50,000</p>
+        </div>
+        <button class="login-btn" style="margin-top:40px; background:#ff3232;" onclick="location.reload()">ÇIKIŞ YAP</button>
+    </div>
 
 <script>
-    const fruits = [
-        { n: "Yerçekimi (Gravity)", s: 1, e: "🌌" },
-        { n: "Aşk (Love)", s: 1, e: "💝" },
-        { n: "Quake", s: 1, e: "🫨" },
-        { n: "Ağrı (Pain)", s: 1, e: "🩸" },
-        { n: "Creation (Control)", s: 1, e: "🧬" },
-        { n: "Ses (Sound)", s: 1, e: "🎵" },
-        { n: "Spider", s: 1, e: "🕸️" },
-        { n: "Portal", s: 1, e: "🌀" },
-        { n: "Kauçuk (Rubber)", s: 1, e: "👒" },
-        { n: "Magma", s: 1, e: "🌋" },
-        { n: "Hayalet (Ghost)", s: 1, e: "👻" },
-        { n: "Işık (Light)", s: 1, e: "✨" },
-        { n: "Kitsune", s: 0, e: "🦊" },
-        { n: "Dragon", s: 0, e: "🐉" }
-    ];
+    let currentUser = "";
 
-    // Listeyi Oluştur
-    const grid = document.getElementById('fruit-grid');
-    fruits.forEach(f => {
-        grid.innerHTML += `
-            <div class="card">
-                <div class="fruit-icon">${f.e}</div>
-                <div class="details">
-                    <h3>${f.n}</h3>
-                    <div class="status ${f.s ? 'in-stock' : 'out-stock'}">
-                        ${f.s ? 'STOKTA (1)' : 'TÜKENDİ (0)'}
-                    </div>
-                </div>
-            </div>
-        `;
-    });
+    function handleLogin() {
+        const user = document.getElementById('username').value;
+        const loader = document.getElementById('loading');
+        
+        if(user.length < 3) {
+            alert("Lütfen geçerli bir Roblox ismi gir!");
+            return;
+        }
 
-    // Takas Paneli Fonksiyonları
+        loader.style.display = "block";
+        
+        // 1.5 saniye simüle edilmiş kontrol
+        setTimeout(() => {
+            currentUser = user;
+            document.getElementById('login-screen').style.display = "none";
+            document.getElementById('app-content').style.display = "block";
+            document.getElementById('user-tag').innerText = "@" + user;
+            document.getElementById('profile-name').innerText = user;
+            document.getElementById('trade-user-info').innerText = "Kullanıcı: " + user;
+            document.getElementById('pfp-initial').innerText = user[0].toUpperCase();
+            loadMarket();
+        }, 1500);
+    }
+
+    function loadMarket() {
+        const fruits = [
+            { n: "Yerçekimi", e: "🌌" }, { n: "Aşk", e: "💝" }, { n: "Portal", e: "🌀" },
+            { n: "Magma", e: "🌋" }, { n: "Işık", e: "✨" }, { n: "Dragon", e: "🐉" }
+        ];
+        const grid = document.getElementById('fruit-grid');
+        grid.innerHTML = "";
+        fruits.forEach(f => {
+            grid.innerHTML += `<div class="card"><div class="fruit-icon">${f.e}</div><div class="details"><h3>${f.n}</h3><div class="status">STOKTA</div></div></div>`;
+        });
+    }
+
     function toggleTrade() {
         document.getElementById('trade-panel').classList.toggle('open');
     }
 
-    function addItem() {
-        const input = document.getElementById('fruit-input');
-        const display = document.getElementById('trade-display');
-        const emptyMsg = document.getElementById('empty-msg');
+    function addTradeItem() {
+        const inp = document.getElementById('trade-input');
+        if(inp.value) {
+            const tag = document.createElement('span');
+            tag.style = "background:var(--accent); color:black; padding:5px 10px; border-radius:20px; font-size:12px; font-weight:bold;";
+            tag.innerText = inp.value;
+            document.getElementById('trade-list').appendChild(tag);
+            inp.value = "";
+        }
+    }
 
-        if(input.value.trim() !== "") {
-            if(emptyMsg) emptyMsg.remove();
-            
-            const item = document.createElement('div');
-            item.className = 'offered-item';
-            item.innerText = input.value;
-            display.appendChild(item);
-            
-            input.value = ""; // Temizle
+    function showSection(sec) {
+        if(sec === 'profile') {
+            document.getElementById('profile-panel').style.display = "block";
+        } else {
+            document.getElementById('profile-panel').style.display = "none";
         }
     }
 </script>
-
 </body>
 </html>
