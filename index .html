@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blox Shop 2026 | Güncel Fiyatlar</title>
+    <style>
+        :root {
+            --neon-blue: #00d4ff;
+            --mythical-purple: #a335ee;
+            --legendary-pink: #eb4b98;
+            --bg-dark: #0a0e14;
+        }
+
+        body {
+            margin: 0; background: var(--bg-dark); color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex; justify-content: center;
+        }
+
+        .shop-container {
+            width: 100%; max-width: 480px; padding: 20px;
+        }
+
+        header {
+            text-align: center; border-bottom: 2px solid var(--neon-blue);
+            padding-bottom: 15px; margin-bottom: 20px;
+        }
+
+        header h1 { margin: 0; font-size: 28px; color: var(--neon-blue); text-transform: uppercase; }
+        header p { margin: 5px 0 0; font-size: 12px; color: #888; }
+
+        .fruit-card {
+            background: #161b22; border-radius: 12px; padding: 15px;
+            margin-bottom: 15px; display: flex; align-items: center;
+            border: 1px solid #30363d; position: relative;
+            transition: 0.3s;
+        }
+
+        .fruit-card:hover { transform: scale(1.02); border-color: var(--neon-blue); }
+
+        .fruit-icon {
+            width: 60px; height: 60px; border-radius: 10px;
+            background: #21262d; margin-right: 15px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 30px;
+        }
+
+        .fruit-info { flex-grow: 1; }
+        .fruit-info h3 { margin: 0; font-size: 18px; }
+        .rarity { font-size: 11px; text-transform: uppercase; font-weight: bold; }
+
+        .prices { text-align: right; }
+        .beli { color: #4ade80; font-weight: bold; font-size: 14px; }
+        .robux { color: #fbbf24; font-size: 12px; margin-top: 4px; }
+
+        /* Nadirlik Renkleri */
+        .mythical { color: var(--mythical-purple); }
+        .legendary { color: var(--legendary-pink); }
+        .rare { color: #3b82f6; }
+
+        .buy-btn {
+            background: var(--neon-blue); color: black; border: none;
+            padding: 5px 15px; border-radius: 5px; font-weight: bold;
+            margin-top: 8px; cursor: pointer; width: 100%;
+        }
+
+        .stock-timer {
+            text-align: center; font-size: 13px; background: #238636;
+            padding: 8px; border-radius: 5px; margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="shop-container">
+    <header>
+        <h1>BLOX SHOP</h1>
+        <p>Mayıs 2026 - Resmi Market Fiyatları</p>
+    </header>
+
+    <div class="stock-timer">
+        Stokların Yenilenmesine: <span id="timer">03:45:12</span>
+    </div>
+
+    <div id="market">
+        <!-- Meyveler Buraya Gelecek -->
+    </div>
+</div>
+
+<script>
+    const fruits = [
+        { name: "Kitsune", rarity: "Mythical", beli: "8,000,000", robux: "4,000", emoji: "🦊", type: "mythical" },
+        { name: "Dragon (Rework)", rarity: "Mythical", beli: "10,000,000", robux: "5,000", emoji: "🐉", type: "mythical" },
+        { name: "Leopard", rarity: "Mythical", beli: "5,000,000", robux: "3,000", emoji: "🐆", type: "mythical" },
+        { name: "Dough", rarity: "Mythical", beli: "2,800,000", robux: "2,400", emoji: "🍩", type: "mythical" },
+        { name: "T-Rex", rarity: "Mythical", beli: "2,700,000", robux: "2,350", emoji: "🦖", type: "mythical" },
+        { name: "Mammoth", rarity: "Mythical", beli: "2,700,000", robux: "2,350", emoji: "🦣", type: "mythical" },
+        { name: "Portal", rarity: "Legendary", beli: "1,900,000", robux: "2,000", emoji: "🌀", type: "legendary" },
+        { name: "Buddha", rarity: "Legendary", beli: "1,200,000", robux: "1,650", emoji: "🧘", type: "legendary" },
+        { name: "Magma", rarity: "Rare", beli: "850,000", robux: "1,300", emoji: "🌋", type: "rare" },
+        { name: "Light", rarity: "Rare", beli: "650,000", robux: "1,100", emoji: "✨", type: "rare" }
+    ];
+
+    const market = document.getElementById('market');
+
+    fruits.forEach(f => {
+        market.innerHTML += `
+            <div class="fruit-card">
+                <div class="fruit-icon">${f.emoji}</div>
+                <div class="fruit-info">
+                    <span class="rarity ${f.type}">${f.rarity}</span>
+                    <h3>${f.name}</h3>
+                    <button class="buy-btn">SATIN AL</button>
+                </div>
+                <div class="prices">
+                    <div class="beli">B$ ${f.beli}</div>
+                    <div class="robux">R$ ${f.robux}</div>
+                </div>
+            </div>
+        `;
+    });
+
+    // Basit bir geri sayım efekti
+    setInterval(() => {
+        let timer = document.getElementById('timer');
+        // Burada gerçek bir geri sayım mantığı eklenebilir
+    }, 1000);
+</script>
+
+</body>
+</html>
