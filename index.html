@@ -3,198 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blox Fruits Store 2026</title>
+    <title>Blox Fruits 2026 Mega Store</title>
     <style>
         :root {
-            --mythical: #a335ee;
-            --legendary: #eb4b98;
-            --rare: #0070dd;
-            --bg: #050505;
-            --card-bg: #121212;
-            --accent: #00ffcc;
+            --mythical: #cf43ff; --legendary: #ff4bb8; --rare: #0084ff;
+            --uncommon: #19ff5d; --common: #b1b1b1; --bg: #0a0a0a;
         }
 
         body {
             margin: 0; background: var(--bg); color: white;
-            font-family: 'Segoe UI', sans-serif;
-            display: flex; justify-content: center;
+            font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center;
         }
 
-        /* Siteyi ortalayan ve sınırlayan ana kutu */
         .app {
-            width: 100%; max-width: 450px;
-            background: #000; min-height: 100vh;
-            border-left: 1px solid #222; border-right: 1px solid #222;
-            position: relative; padding-bottom: 80px;
+            width: 100%; max-width: 500px; background: #000;
+            min-height: 100vh; border: 1px solid #222; padding-bottom: 80px;
         }
 
-        /* Üst Menü */
         header {
-            padding: 20px; text-align: center;
-            background: linear-gradient(to bottom, #111, #000);
-            border-bottom: 2px solid var(--accent);
+            padding: 20px; text-align: center; border-bottom: 3px solid #00ffcc;
+            background: linear-gradient(180deg, #111, #000);
         }
 
-        header h1 { margin: 0; font-size: 24px; color: var(--accent); letter-spacing: 2px; }
-        header p { margin: 5px 0 0; font-size: 12px; color: #888; }
-
-        /* Stok Zamanlayıcı */
-        .stock-bar {
-            background: #1a1a1a; padding: 10px; margin: 10px;
-            border-radius: 8px; font-size: 13px; text-align: center;
-            border: 1px dashed var(--accent);
-        }
-
-        /* Meyve Listesi */
-        .store-grid { padding: 15px; display: flex; flex-direction: column; gap: 15px; }
+        .fruit-list { padding: 10px; display: grid; gap: 12px; }
 
         .fruit-card {
-            background: var(--card-bg); border-radius: 15px;
-            overflow: hidden; border: 1px solid #222;
-            display: flex; flex-direction: column;
-            transition: 0.3s;
+            background: #111; border-radius: 12px; display: flex; 
+            align-items: center; padding: 10px; border: 1px solid #222;
         }
 
-        .fruit-card:hover { border-color: var(--accent); transform: translateY(-3px); }
-
-        /* Meyve Resmi */
-        .fruit-img {
-            width: 100%; height: 180px; object-fit: cover;
-            background: #1a1a1a;
+        .img-container {
+            width: 70px; height: 70px; background: #1a1a1a;
+            border-radius: 8px; margin-right: 15px; overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
         }
 
-        .fruit-details { padding: 15px; }
+        .img-container img { width: 90%; height: 90%; object-fit: contain; }
 
-        .rarity-tag {
-            font-size: 10px; font-weight: bold; text-transform: uppercase;
-            padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px;
-        }
+        .info { flex-grow: 1; }
+        .info h3 { margin: 0; font-size: 16px; }
+        .rarity { font-size: 10px; font-weight: bold; text-transform: uppercase; }
 
-        .mythical { background: var(--mythical); }
-        .legendary { background: var(--legendary); }
-        .rare { background: var(--rare); }
+        .price-box { text-align: right; min-width: 100px; }
+        .beli { color: #4ade80; font-weight: bold; font-size: 13px; }
+        .robux { color: #fbbf24; font-size: 11px; margin-top: 4px; }
 
-        .fruit-name { font-size: 20px; margin: 0; font-weight: bold; }
-        
-        .price-row {
-            display: flex; justify-content: space-between; margin-top: 12px;
-            padding-top: 12px; border-top: 1px solid #222;
-        }
+        /* Nadirlik Renkleri */
+        .myth { color: var(--mythical); }
+        .leg { color: var(--legendary); }
+        .rar { color: var(--rare); }
+        .unc { color: var(--uncommon); }
+        .com { color: var(--common); }
 
-        .price-item { display: flex; flex-direction: column; }
-        .price-label { font-size: 10px; color: #777; text-transform: uppercase; }
-        .price-val { font-weight: bold; font-size: 15px; }
-        .beli { color: #4ade80; }
-        .robux { color: #fbbf24; }
-
-        .buy-button {
-            width: 100%; background: var(--accent); color: #000;
-            border: none; padding: 12px; margin-top: 15px;
-            border-radius: 8px; font-weight: bold; cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .buy-button:active { transform: scale(0.95); opacity: 0.8; }
-
-        /* Alt Navigasyon */
         .nav-bottom {
-            position: fixed; bottom: 0; width: 100%; max-width: 450px;
-            background: rgba(0,0,0,0.9); backdrop-filter: blur(10px);
-            display: flex; justify-content: space-around; padding: 15px 0;
-            border-top: 1px solid #222;
+            position: fixed; bottom: 0; width: 100%; max-width: 500px;
+            background: rgba(0,0,0,0.95); display: flex; 
+            justify-content: space-around; padding: 15px 0; border-top: 1px solid #333;
         }
-
-        .nav-btn { color: #888; text-decoration: none; font-size: 12px; text-align: center; }
-        .nav-btn.active { color: var(--accent); }
     </style>
 </head>
 <body>
 
 <div class="app">
     <header>
-        <h1>BLOX MARKET</h1>
-        <p>GÜNCEL 2026 VERİLERİ (V2.6)</p>
+        <h1 style="margin:0; color:#00ffcc; font-size:22px;">BLOX FRUITS MARKET</h1>
+        <small style="color:#666;">MAYIS 2026 GÜNCEL STOK</small>
     </header>
 
-    <div class="stock-bar">
-        STOK YENİLENMESİ: <span id="timer" style="color: var(--accent);">02:14:55</span>
-    </div>
-
-    <div class="store-grid">
-        
-        <div class="fruit-card">
-            <img src="https://api.dicebear.com/7.x/identicon/svg?seed=dragon" class="fruit-img" alt="Dragon">
-            <div class="fruit-details">
-                <div class="rarity-tag mythical">Mythical</div>
-                <h3 class="fruit-name">Dragon (Rework)</h3>
-                <div class="price-row">
-                    <div class="price-item">
-                        <span class="price-label">Beli Fiyatı</span>
-                        <span class="price-val beli">10.000.000 B$</span>
-                    </div>
-                    <div class="price-item">
-                        <span class="price-label">Robux Fiyatı</span>
-                        <span class="price-val robux">5.000 R$</span>
-                    </div>
-                </div>
-                <button class="buy-button">SATIN AL</button>
-            </div>
-        </div>
-
-        <div class="fruit-card">
-            <img src="https://api.dicebear.com/7.x/identicon/svg?seed=kitsune" class="fruit-img" alt="Kitsune">
-            <div class="fruit-details">
-                <div class="rarity-tag mythical">Mythical</div>
-                <h3 class="fruit-name">Kitsune</h3>
-                <div class="price-row">
-                    <div class="price-item">
-                        <span class="price-label">Beli Fiyatı</span>
-                        <span class="price-val beli">8.000.000 B$</span>
-                    </div>
-                    <div class="price-item">
-                        <span class="price-label">Robux Fiyatı</span>
-                        <span class="price-val robux">4.000 R$</span>
-                    </div>
-                </div>
-                <button class="buy-button">SATIN AL</button>
-            </div>
-        </div>
-
-        <div class="fruit-card">
-            <img src="https://api.dicebear.com/7.x/identicon/svg?seed=buddha" class="fruit-img" alt="Buddha">
-            <div class="fruit-details">
-                <div class="rarity-tag legendary">Legendary</div>
-                <h3 class="fruit-name">Buddha</h3>
-                <div class="price-row">
-                    <div class="price-item">
-                        <span class="price-label">Beli Fiyatı</span>
-                        <span class="price-val beli">1.200.000 B$</span>
-                    </div>
-                    <div class="price-item">
-                        <span class="price-label">Robux Fiyatı</span>
-                        <span class="price-val robux">1.650 R$</span>
-                    </div>
-                </div>
-                <button class="buy-button">SATIN AL</button>
-            </div>
-        </div>
-
+    <div class="fruit-list" id="market-list">
         </div>
 
     <div class="nav-bottom">
-        <a href="#" class="nav-btn active">🏠<br>Market</a>
-        <a href="#" class="nav-btn">🔄<br>Takas</a>
-        <a href="#" class="nav-btn">🛡️<br>Klan</a>
-        <a href="#" class="nav-btn">👤<br>Profil</a>
+        <span>🏠 Market</span>
+        <span>🔄 Takas</span>
+        <span>🎒 Envanter</span>
     </div>
 </div>
 
 <script>
-    // Basit bir satın alma uyarısı
-    document.querySelectorAll('.buy-button').forEach(btn => {
-        btn.addEventListener('click', () => {
-            alert('2026 Sunucu Hatası: Cüzdanınızda yeterli Robux bulunamadı!');
-        });
+    const fruits = [
+        { n: "Dragon (Rework)", r: "Mythical", c: "myth", b: "10,000,000", rb: "5,000", id: "dragon" },
+        { n: "Kitsune", r: "Mythical", c: "myth", b: "8,000,000", rb: "4,000", id: "kitsune" },
+        { n: "Leopard", r: "Mythical", c: "myth", b: "5,000,000", rb: "3,000", id: "leopard" },
+        { n: "Dough", r: "Mythical", c: "myth", b: "2,800,000", rb: "2,400", id: "dough" },
+        { n: "T-Rex", r: "Mythical", c: "myth", b: "2,700,000", rb: "2,350", id: "trex" },
+        { n: "Mammoth", r: "Mythical", c: "myth", b: "2,700,000", rb: "2,350", id: "mammoth" },
+        { n: "Spirit", r: "Mythical", c: "myth", b: "3,400,000", rb: "2,550", id: "spirit" },
+        { n: "Control", r: "Mythical", c: "myth", b: "3,200,000", rb: "2,500", id: "control" },
+        { n: "Venom", r: "Mythical", c: "myth", b: "3,000,000", rb: "2,450", id: "venom" },
+        { n: "Shadow", r: "Mythical", c: "myth", b: "2,900,000", rb: "2,425", id: "shadow" },
+        { n: "Portal", r: "Legendary", c: "leg", b: "1,900,000", rb: "2,000", id: "portal" },
+        { n: "Buddha", r: "Legendary", c: "leg", b: "1,200,000", rb: "1,650", id: "buddha" },
+        { n: "Blizzard", r: "Legendary", c: "leg", b: "2,400,000", rb: "2,250", id: "blizzard" },
+        { n: "Rumble", r: "Legendary", c: "leg", b: "2,100,000", rb: "2,100", id: "rumble" },
+        { n: "Phoenix", r: "Legendary", c: "leg", b: "1,800,000", rb: "2,000", id: "phoenix" },
+        { n: "Magma", r: "Rare", c: "rar", b: "850,000", rb: "1,300", id: "magma" },
+        { n: "Light", r: "Rare", c: "rar", b: "650,000", rb: "1,100", id: "light" },
+        { n: "Ice", r: "Uncommon", c: "unc", b: "350,000", rb: "750", id: "ice" },
+        { n: "Flame", r: "Uncommon", c: "unc", b: "250,000", rb: "550", id: "flame" },
+        { n: "Rocket", r: "Common", c: "com", b: "5,000", rb: "50", id: "rocket" }
+    ];
+
+    const list = document.getElementById('market-list');
+    fruits.forEach(f => {
+        list.innerHTML += `
+            <div class="fruit-card">
+                <div class="img-container">
+                    <img src="https://api.dicebear.com/7.x/bottts/svg?seed=${f.id}" alt="${f.n}">
+                </div>
+                <div class="info">
+                    <span class="rarity ${f.c}">${f.r}</span>
+                    <h3>${f.n}</h3>
+                </div>
+                <div class="price-box">
+                    <div class="beli">${f.b} B$</div>
+                    <div class="robux">${f.rb} R$</div>
+                </div>
+            </div>
+        `;
     });
 </script>
 
