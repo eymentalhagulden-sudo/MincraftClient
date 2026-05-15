@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Street Clicker 😎 - VIP Edition</title>
+    <title>Street Clicker 😎 - Ultimate Edition</title>
     <style>
         * {
             box-sizing: border-box;
@@ -21,6 +21,34 @@
             display: flex;
             height: 100vh;
             overflow: hidden;
+            transition: background 0.5s;
+        }
+
+        /* Polis Efekti İçin Ekran Flaş Modu */
+        .police-mode {
+            animation: policeFlash 0.4s infinite;
+        }
+        @keyframes policeFlash {
+            0% { background-color: rgba(255, 0, 0, 0.4); }
+            50% { background-color: rgba(0, 0, 255, 0.4); }
+        }
+
+        /* VIP Modu Sallantı Efekti */
+        .shake-screen {
+            animation: screenShake 0.1s infinite;
+        }
+        @keyframes screenShake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(0px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(2px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(2px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
         }
 
         /* Oyun Alanı */
@@ -58,12 +86,19 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: transform 0.05s, box-shadow 0.1s;
+            transition: transform 0.05s, box-shadow 0.1s, background 0.5s;
         }
 
         .clicker-btn:active {
             transform: scale(0.95);
             box-shadow: 0 0 50px #ff007f, inset 0 0 30px rgba(0,0,0,0.8);
+        }
+
+        /* VIP Aktifken Buton Tasarımı */
+        .clicker-btn.vip-style {
+            background: radial-gradient(circle, #ffd700, #b8860b) !important;
+            box-shadow: 0 0 40px #ffd700, inset 0 0 20px rgba(0,0,0,0.5) !important;
+            border-color: #ffd700 !important;
         }
 
         /* Dükkan Paneli */
@@ -136,7 +171,7 @@
             color: #00ffcc;
             padding: 5px;
             outline: none;
-            width: 120px;
+            width: 140px;
         }
 
         .cheat-box button {
@@ -148,19 +183,30 @@
             font-weight: bold;
         }
 
-        /* Patron Geldi Duyurusu */
-        #bossAlert {
+        /* Büyük Bildirimler */
+        .alert-text {
             position: fixed;
             top: 25%;
             left: 50%;
             transform: translateX(-50%);
             font-size: 5rem;
-            color: #ff0000;
-            text-shadow: 0 0 20px #000, 0 0 40px #ff0000;
             font-weight: 900;
             z-index: 999;
             display: none;
-            animation: bossAnim 0.5s infinite alternate;
+            text-align: center;
+            pointer-events: none;
+        }
+
+        #bossAlert {
+            color: #ffcc00;
+            text-shadow: 0 0 20px #000, 0 0 40px #ffcc00;
+            animation: bossAnim 0.3s infinite alternate;
+        }
+
+        #policeAlert {
+            color: #ff0000;
+            text-shadow: 0 0 20px #000, 0 0 40px #ff0000;
+            animation: bossAnim 0.3s infinite alternate;
         }
 
         @keyframes bossAnim {
@@ -181,12 +227,25 @@
             0% { opacity: 1; transform: translateY(0); }
             100% { opacity: 0; transform: translateY(-100px); }
         }
+
+        /* Grafiti Leke Efekti */
+        .graffiti-splat {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0.7;
+            filter: blur(5px);
+            z-index: 1;
+        }
     </style>
 </head>
-<body>
+<body id="mainBody">
 
-    <!-- Büyük Kırmızı Uyarı -->
-    <div id="bossAlert">PATRON GELDİ</div>
+    <!-- Bildirim Yazıları -->
+    <div id="bossAlert" class="alert-text">👑 PATRON GELDİ 👑</div>
+    <div id="policeAlert" class="alert-text">🚨 POLİS BASKINI! 🚨</div>
 
     <div class="game-container" id="gameContainer">
         <div class="score-display" id="scoreDisplay">0 Sokak Puanı</div>
@@ -204,7 +263,7 @@
 
     <!-- Sağ Alttaki Gizli Kod Alanı -->
     <div class="cheat-box">
-        <input type="text" id="cheatInput" placeholder="Kod yaz...">
+        <input type="text" id="cheatInput" placeholder="Sokak şifresi...">
         <button onclick="checkCheat()">Gönder</button>
     </div>
 
@@ -212,6 +271,7 @@
         let score = 0;
         let cps = 0;
         let vipActive = false;
+        let policeActive = false;
 
         const items = {
             1: { name: "Kedi", cost: 15, cps: 0.5, count: 0, baseCost: 15 },
@@ -224,27 +284,79 @@
         const cpsDisplay = document.getElementById('cpsDisplay');
         const clickerBtn = document.getElementById('clickerBtn');
         const bossAlert = document.getElementById('bossAlert');
+        const policeAlert = document.getElementById('policeAlert');
+        const mainBody = document.getElementById('mainBody');
+        const gameContainer = document.getElementById('gameContainer');
 
         clickerBtn.addEventListener('click', (e) => {
-            score += 1;
+            let clickPower = vipActive ? 1000 : 1; // VIP ise tıklama gücü de 1000 olur
+            score += clickPower;
             updateDisplay();
-            createFloatingText(e.clientX, e.clientY, "+1");
+            createFloatingText(e.clientX, e.clientY, "+" + clickPower);
         });
 
-        // Hile Kontrolü
+        // Gelişmiş Kod Sistemi
         function checkCheat() {
-            const val = document.getElementById('cheatInput').value;
-            if (val === "VİP") {
+            const val = document.getElementById('cheatInput').value.trim().toUpperCase();
+            
+            // 1. YENİ VIP KODU
+            if (val === "VİP" || val === "VIP") {
                 vipActive = true;
-                bossAlert.style.display = "block"; // PATRON GELDİ yazısını aç
+                policeActive = false; // Polisi iptal eder
+                mainBody.classList.remove('police-mode');
                 
-                // 5 saniye sonra ekrandaki yazı kaybolsun (puan gelmeye devam eder)
-                setTimeout(() => { bossAlert.style.display = "none"; }, 5000); 
+                // VIP Efektleri: Ekran sarsılır, buton taca dönüşür
+                mainBody.classList.add('shake-screen');
+                clickerBtn.innerText = "👑";
+                clickerBtn.classList.add('vip-style');
+                bossAlert.style.display = "block";
+                
+                setTimeout(() => { 
+                    bossAlert.style.display = "none"; 
+                    mainBody.classList.remove('shake-screen'); // 4 saniye sonra sallantı durur
+                }, 4000); 
                 
                 calculateCps();
                 updateDisplay();
-                document.getElementById('cheatInput').value = ""; // Kutuyu temizle
             }
+            
+            // 2. POLİS KODU (Risk/Ceza Kodu)
+            else if (val === "POLİS" || val === "POLIS") {
+                policeActive = true;
+                vipActive = false; // VIP'yi iptal eder
+                clickerBtn.innerText = "🥫";
+                clickerBtn.classList.remove('vip-style');
+                
+                mainBody.classList.add('police-mode');
+                policeAlert.style.display = "block";
+                
+                setTimeout(() => { 
+                    policeAlert.style.display = "none"; 
+                    mainBody.classList.remove('police-mode');
+                    policeActive = false; // 7 saniye sonra polis gider
+                    calculateCps();
+                    updateDisplay();
+                }, 7000);
+
+                calculateCps();
+                updateDisplay();
+            }
+
+            // 3. KOPİL KODU (Anında Nakit)
+            else if (val === "KOPİL" || val === "KOPIL") {
+                score += 500000;
+                createFloatingText(window.innerWidth / 2, window.innerHeight / 2, "+500.000 Puan!", "#00ffcc");
+                updateDisplay();
+            }
+
+            // 4. GRAFİTİ KODU (Ekranı Boyama Hilesi)
+            else if (val === "GRAFİTİ" || val === "GRAFITI") {
+                for(let i=0; i<15; i++) {
+                    setTimeout(createGraffitiSplat, i * 100);
+                }
+            }
+
+            document.getElementById('cheatInput').value = ""; // Kutuyu temizle
         }
 
         function buyItem(id) {
@@ -263,8 +375,15 @@
             for (let id in items) {
                 baseCps += items[id].count * items[id].cps;
             }
-            // VIP aktifse ekstra 1 milyon ekle
-            cps = baseCps + (vipActive ? 1000000 : 0);
+            
+            // Hesaplama mantığı değiştirildi:
+            if (vipActive) {
+                cps = baseCps + 1000000;
+            } else if (policeActive) {
+                cps = Math.floor(baseCps * 0.5); // Polis varken kazanç yarıya düşer
+            } else {
+                cps = baseCps;
+            }
         }
 
         function updateDisplay() {
@@ -281,14 +400,26 @@
             }
         }
 
-        function createFloatingText(x, y, text) {
+        function createFloatingText(x, y, text, customColor = null) {
             const el = document.createElement('div');
             el.className = 'floating-text';
             el.innerText = text;
+            if(customColor) el.style.color = customColor;
             el.style.left = `${x - 20}px`;
             el.style.top = `${y - 20}px`;
             document.body.appendChild(el);
             setTimeout(() => el.remove(), 800);
+        }
+
+        // Rastgele Grafiti Lekesi Oluşturma
+        function createGraffitiSplat() {
+            const colors = ['#ff007f', '#00ffcc', '#ffcc00', '#ff3300', '#9900ff'];
+            const splat = document.createElement('div');
+            splat.className = 'graffiti-splat';
+            splat.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            splat.style.left = Math.random() * (window.innerWidth - 100) + 'px';
+            splat.style.top = Math.random() * (window.innerHeight - 100) + 'px';
+            gameContainer.appendChild(splat);
         }
 
         // Oyun Döngüsü
