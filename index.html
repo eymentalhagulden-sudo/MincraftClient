@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Street Clicker v5 😎 - Bug Fix & Premium Backgrounds</title>
+    <title>Street Clicker v6 😎 - Hack Mode & Definitive Fix</title>
     <style>
         * {
             box-sizing: border-box;
@@ -21,24 +21,52 @@
             display: flex;
             height: 100vh;
             overflow: hidden;
-            transition: background 2s, color 0.5s;
+            transition: background 1s, color 0.5s;
         }
 
-        /* Kaliteli ve Alakasız Resim Gelmesini Engelleyen Net Temalar */
         .day-theme {
             background: linear-gradient(rgba(20, 24, 33, 0.85), rgba(20, 24, 33, 0.95)), 
-                        url('https://images.unsplash.com/photo-1572945281861-68b29330e5d2?q=80&w=1200'); /* Net Sokak Görseli */
+                        url('https://images.unsplash.com/photo-1572945281861-68b29330e5d2?q=80&w=1200');
         }
 
         .night-theme {
             background: linear-gradient(rgba(10, 10, 15, 0.9), rgba(10, 10, 15, 0.95)), 
-                        url('https://images.unsplash.com/photo-1519501025264-65ba15a82390?q=80&w=1200'); /* Net Gece Şehri */
+                        url('https://images.unsplash.com/photo-1519501025264-65ba15a82390?q=80&w=1200');
         }
 
+        /* MATRIX MODU */
         .matrix-mode {
-            --neon-color: #00ff00 !important;
             filter: hue-rotate(120deg) brightness(1.1);
         }
+
+        /* SONSUZ HACK MODU */
+        .hack-mode {
+            background: #000000 !important;
+            color: #00ff00 !important;
+            font-family: 'Courier New', Courier, monospace !important;
+        }
+        .hack-mode .score-display, .hack-mode .cps-display, .hack-mode .prestige-display {
+            color: #00ff00 !important;
+            text-shadow: 0 0 15px #00ff00 !important;
+            font-family: 'Courier New', Courier, monospace !important;
+        }
+        .hack-mode .clicker-btn {
+            background: radial-gradient(circle, #00ff00, #003300) !important;
+            box-shadow: 0 0 40px #00ff00 !important;
+            border-color: #00ff00 !important;
+        }
+        .hack-mode .market-toggle-btn {
+            background: #00ff00 !important;
+            color: #000 !important;
+            box-shadow: 0 0 20px #00ff00 !important;
+        }
+        .hack-mode .side-container {
+            background: rgba(0, 5, 0, 0.98) !important;
+            border-left: 3px solid #00ff00 !important;
+        }
+        .hack-mode .shop-title { color: #00ff00 !important; }
+        .hack-mode .shop-item { border-color: #005500 !important; }
+        .hack-mode .shop-item:hover { border-color: #00ff00 !important; }
 
         .shake-screen { animation: screenShake 0.1s infinite; }
         @keyframes screenShake {
@@ -188,6 +216,7 @@
 
         .alert-text { position: fixed; top: 30%; left: 50%; transform: translate(-50%, -50%); font-size: 3.5rem; font-weight: 900; z-index: 999; display: none; text-align: center; pointer-events: none;}
         #bossAlert { color: #ffd700; text-shadow: 0 0 30px #ffd700; }
+        #hackAlert { color: #00ff00; text-shadow: 0 0 30px #00ff00; }
 
         .floating-text { position: absolute; font-weight: bold; font-size: 1.6rem; pointer-events: none; animation: floatUp 0.8s ease-out forwards; text-shadow: 0 2px 4px #000; }
         @keyframes floatUp { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-80px); } }
@@ -196,6 +225,7 @@
 <body id="mainBody" class="night-theme">
 
     <div id="bossAlert" class="alert-text">👑 VIP AKIŞI AKTİF (+1M CPS) 👑</div>
+    <div id="hackAlert" class="alert-text">💻 HACKER MODU AKTİF 💻</div>
 
     <div class="game-container" id="gameContainer">
         <button class="market-toggle-btn" onclick="toggleMarket()">🛒 Market</button>
@@ -248,8 +278,9 @@
 
     <script>
         let score = 0; let cps = 0; let prestigeStars = 0;
-        let vipActive = false; let mahalleMultiplier = 1;
-        let goldenMultiplier = 1; let hizliActive = false; let dilenciActive = false;
+        let vipActive = false; let hackActive = false;
+        let mahalleMultiplier = 1; let goldenMultiplier = 1; 
+        let hizliActive = false; let dilenciActive = false;
         let isNight = true;
 
         let items = {
@@ -276,14 +307,15 @@
 
         function toggleMarket() { sideContainer.classList.toggle('open'); }
 
-        // LOAD GAME (F5 KORUMASI)
+        // LOAD GAME (F5 DOSYA KORUMASI)
         function loadGame() {
-            const savedData = localStorage.getItem('streetClickerSave_v5');
+            const savedData = localStorage.getItem('streetClickerSave_v6');
             if (savedData) {
                 const data = JSON.parse(savedData);
                 score = data.score || 0;
                 prestigeStars = data.prestigeStars || 0;
                 vipActive = data.vipActive || false;
+                hackActive = data.hackActive || false;
                 hizliActive = data.hizliActive || false;
                 dilenciActive = data.dilenciActive || false;
                 mahalleMultiplier = data.mahalleMultiplier || 1;
@@ -311,6 +343,10 @@
                     clickerBtn.innerText = "👑";
                     clickerBtn.classList.add('vip-style');
                 }
+                if (hackActive) {
+                    mainBody.classList.add('hack-mode');
+                    clickerBtn.innerText = "💻";
+                }
             }
         }
 
@@ -320,35 +356,38 @@
                 score: score,
                 prestigeStars: prestigeStars,
                 vipActive: vipActive,
+                hackActive: hackActive,
                 hizliActive: hizliActive,
                 dilenciActive: dilenciActive,
                 mahalleMultiplier: mahalleMultiplier,
                 items: items,
                 areas: areas
             };
-            localStorage.setItem('streetClickerSave_v5', JSON.stringify(dataToSave));
+            localStorage.setItem('streetClickerSave_v6', JSON.stringify(dataToSave));
         }
 
         clickerBtn.addEventListener('click', (e) => {
             let pwr = 1;
             if (hizliActive) pwr = 5000;
+            if (hackActive) pwr = 999999999;
             if (dilenciActive) pwr = Math.floor(Math.random() * 100000) + 1;
             
             let finalClick = pwr * (1 + (prestigeStars * 0.5)) * goldenMultiplier;
             score += finalClick;
             updateDisplay();
-            createFloatingText(e.clientX, e.clientY, "+" + Math.floor(finalClick), isNight ? "#00ffcc" : "#ff007f");
+            createFloatingText(e.clientX, e.clientY, "+" + Math.floor(finalClick), hackActive ? "#00ff00" : (isNight ? "#00ffcc" : "#ff007f"));
         });
 
-        // Gece - Gündüz Döngüsü Arka Plan Değişimi
         setInterval(() => {
             isNight = !isNight;
-            if (isNight) {
-                mainBody.classList.remove('day-theme'); mainBody.classList.add('night-theme');
-                timeBadge.innerText = "🌙 GECE (Kedi & Müzisyen x2 Üretim!)";
-            } else {
-                mainBody.classList.remove('night-theme'); mainBody.classList.add('day-theme');
-                timeBadge.innerText = "☀️ GÜNDÜZ (Patenli Çocuk x2 Üretim!)";
+            if (!hackActive) { // Hack modunda arka plan değişmesin sabit kalsın
+                if (isNight) {
+                    mainBody.classList.remove('day-theme'); mainBody.classList.add('night-theme');
+                    timeBadge.innerText = "🌙 GECE (Kedi & Müzisyen x2 Üretim!)";
+                } else {
+                    mainBody.classList.remove('night-theme'); mainBody.classList.add('day-theme');
+                    timeBadge.innerText = "☀️ GÜNDÜZ (Patenli Çocuk x2 Üretim!)";
+                }
             }
             calculateCps(); updateDisplay();
         }, 30000);
@@ -356,17 +395,18 @@
         function attackArea(id) {
             let area = areas[id];
             if (area.owned) return;
-            if (score >= area.cost) {
-                score -= area.cost; area.owned = true;
+            if (score >= area.cost || hackActive) {
+                if (!hackActive) score -= area.cost;
+                area.owned = true;
                 document.getElementById(`gang${id}Info`).innerText = "Durum: SİZİN ÇETE! 😎";
-                document.getElementById(`gang${id}Info`).style.color = "#00ffcc";
+                document.getElementById(`gang${id}Info`).style.color = hackActive ? "#00ff00" : "#00ffcc";
                 calculateCps(); updateDisplay(); saveGame();
             } else {
                 alert("Yetersiz sokak puanı!");
             }
         }
 
-        // HİLE KONTROLLERİ
+        // HİLE KONTROLLERİ (TAMAMEN BUGSIZLAŞTIRILDI)
         function checkCheat() {
             const val = document.getElementById('cheatInput').value.trim().toUpperCase();
             
@@ -377,16 +417,28 @@
                 document.getElementById('bossAlert').style.display = "block";
                 setTimeout(() => { document.getElementById('bossAlert').style.display = "none"; }, 3000);
             }
-            else if (val === "MATRİX" || val === "MATRIX") { mainBody.classList.toggle('matrix-mode'); }
+            else if (val === "MATRİX" || val === "MATRIX") { 
+                mainBody.classList.toggle('matrix-mode'); 
+            }
+            // SONSUZ HACK MODU ŞİFRESİ
+            else if (val === "SONSUZ") {
+                hackActive = true;
+                score = Infinity;
+                mainBody.className = "hack-mode";
+                clickerBtn.innerText = "💻";
+                document.getElementById('hackAlert').style.display = "block";
+                setTimeout(() => { document.getElementById('hackAlert').style.display = "none"; }, 3000);
+            }
             else if (val === "ZENGİN" || val === "ZENGIN") { score += 50000000; }
-            else if (val === "FAKİR" || val === "FAKIR") { score = 0; }
-            else if (val === "SIFIRLA") { localStorage.removeItem('streetClickerSave_v5'); location.reload(); }
+            else if (val === "FAKİR" || val === "FAKIR") { score = 0; hackActive = false; mainBody.className = "night-theme"; clickerBtn.innerText = "🥫"; }
+            else if (val === "SIFIRLA") { localStorage.removeItem('streetClickerSave_v6'); location.reload(); }
 
             calculateCps(); updateDisplay(); saveGame();
             document.getElementById('cheatInput').value = "";
         }
 
         function gambleZar() {
+            if(hackActive) return;
             let amount = parseInt(document.getElementById('gambleAmount').value);
             if (isNaN(amount) || amount <= 0 || amount > score) return;
             if (Math.random() < 0.5) { score += amount; } else { score -= amount; }
@@ -395,9 +447,12 @@
         }
 
         function doPrestige() {
-            if (score >= 10000000) {
-                prestigeStars++; score = 0; vipActive = false; hizliActive = false; dilenciActive = false;
-                clickerBtn.innerText = "🥫"; clickerBtn.classList.remove('vip-style');
+            if (score >= 10000000 || hackActive) {
+                prestigeStars++; score = hackActive ? Infinity : 0;
+                if(!hackActive) {
+                    vipActive = false; hizliActive = false; dilenciActive = false;
+                    clickerBtn.innerText = "🥫"; clickerBtn.classList.remove('vip-style');
+                }
                 for (let id in items) { items[id].count = 0; items[id].cost = items[id].baseCost; }
                 for (let id in areas) { areas[id].owned = false; document.getElementById(`gang${id}Info`).innerText = "Durum: Sahipsiz"; document.getElementById(`gang${id}Info`).style.color = "#fff"; }
                 calculateCps(); updateDisplay(); saveGame();
@@ -406,21 +461,22 @@
 
         function buyItem(id) {
             let item = items[id];
-            if (score >= item.cost) {
-                score -= item.cost; item.count++;
+            if (score >= item.cost || hackActive) {
+                if(!hackActive) score -= item.cost;
+                item.count++;
                 item.cost = Math.floor(item.baseCost * Math.pow(1.15, item.count));
                 calculateCps(); updateDisplay(); saveGame();
             }
         }
 
-        // TAMAMEN DÜZELTİLEN SANİYELİK KAZANÇ (CPS) HESAPLAMA MOTORU
+        // TAM KUSURSUZ SANİYELİK KAZANÇ ÇALIŞTIRMA MOTORU
         function calculateCps() {
             let baseCps = 0;
             let kediMult = isNight ? 2 : 1;
             let patenMult = !isNight ? 2 : 1;
             let muzikMult = isNight ? 2 : 1;
 
-            // Bug buradaydı, düzeltildi:
+            // Değişken isimleri düzeltildi: items[id] olarak çağırılıyor!
             baseCps += items.count * items.cps * kediMult;
             baseCps += items[2].count * items[2].cps * patenMult;
             baseCps += items[3].count * items[3].cps * muzikMult;
@@ -430,8 +486,9 @@
             baseCps *= mahalleMultiplier;
             baseCps *= (1 + (prestigeStars * 0.5));
 
-            // VIP kodu aktifse saniyede net +1 Milyon puan ekle
-            if (vipActive) {
+            if (hackActive) {
+                cps = Infinity;
+            } else if (vipActive) {
                 cps = baseCps + 1000000;
             } else {
                 cps = baseCps;
@@ -441,38 +498,43 @@
         }
 
         function updateDisplay() {
-            scoreDisplay.innerText = Math.floor(score).toLocaleString() + " Puan";
-            cpsDisplay.innerText = "Saniyede: " + Math.floor(cps).toLocaleString();
+            if (hackActive) {
+                scoreDisplay.innerText = "∞ PUAN (HACKED)";
+                cpsDisplay.innerText = "Saniyede: ∞ KAZANÇ";
+            } else {
+                scoreDisplay.innerText = Math.floor(score).toLocaleString() + " Puan";
+                cpsDisplay.innerText = "Saniyede: " + Math.floor(cps).toLocaleString();
+            }
+            
             prestigeDisplay.innerText = `⭐ Sokak İtibarı: ${prestigeStars}`;
 
-            if (score >= 10000000) prestigeBtn.style.display = "block"; else prestigeBtn.style.display = "none";
+            if (score >= 10000000 || hackActive) prestigeBtn.style.display = "block"; else prestigeBtn.style.display = "none";
             
             for (let id in items) {
                 let item = items[id];
                 document.getElementById(`cost${id}`).innerText = item.cost.toLocaleString();
                 document.getElementById(`count${id}`).innerText = item.count;
                 let el = document.getElementById(`item${id}`);
-                if (score >= item.cost) el.classList.remove('disabled'); else el.classList.add('disabled');
+                if (score >= item.cost || hackActive) el.classList.remove('disabled'); else el.classList.add('disabled');
             }
         }
 
         function createFloatingText(x, y, text, color) {
-            const el = document.createElement('div'); el.className = 'floating-text'; el.innerText = text; el.style.color = color;
+            const el = document.createElement('div'); el.className = 'floating-text'; el.innerText = hackActive ? "+∞" : text; el.style.color = color;
             el.style.left = `${x}px`; el.style.top = `${y}px`; document.body.appendChild(el);
             setTimeout(() => el.remove(), 800);
         }
 
-        // Başlangıç tetiklemeleri
+        // Başlangıç Yüklemeleri
         loadGame();
         calculateCps();
         updateDisplay();
 
-        // 10 saniyede bir otomatik kaydetme garantisi
         setInterval(saveGame, 10000);
 
-        // Her 100ms'de bir skoru güncel tutma akıcılığı
+        // Her 100ms'de bir oyun döngüsü
         setInterval(() => { 
-            if (cps > 0) { 
+            if (cps > 0 && !hackActive) { 
                 score += cps / 10; 
                 updateDisplay(); 
             } 
