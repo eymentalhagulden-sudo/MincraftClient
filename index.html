@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Street Clicker v7 😎 - Anti-Cheat & Video Update</title>
+    <title>Street Clicker v8 😎 - New Modes Update</title>
     <style>
         * {
             box-sizing: border-box;
@@ -15,30 +15,31 @@
 
         body {
             background-size: cover !important;
-            background-position: center center !important;
+            background-position: center !important;
             background-attachment: fixed !important;
+            background-repeat: no-repeat !important;
             color: #fff;
             display: flex;
             height: 100vh;
             overflow: hidden;
-            transition: background 1s, color 0.5s;
+            transition: background 0.8s, color 0.5s;
         }
 
         .day-theme {
             background: linear-gradient(rgba(20, 24, 33, 0.85), rgba(20, 24, 33, 0.95)), 
-                        url('https://images.unsplash.com/photo-1572945281861-68b29330e5d2?q=80&w=1200');
+                        url('https://images.unsplash.com/photo-1572945281861-68b29330e5d2?q=80&w=1200') !important;
         }
 
         .night-theme {
             background: linear-gradient(rgba(10, 10, 15, 0.9), rgba(10, 10, 15, 0.95)), 
-                        url('https://images.unsplash.com/photo-1519501025264-65ba15a82390?q=80&w=1200');
+                        url('https://images.unsplash.com/photo-1519501025264-65ba15a82390?q=80&w=1200') !important;
         }
 
         .matrix-mode {
             filter: hue-rotate(120deg) brightness(1.1);
         }
 
-        /* SONSUZ HACK MODU */
+        /* HACK MODU */
         .hack-mode {
             background: #000000 !important;
             color: #00ff00 !important;
@@ -47,25 +48,22 @@
         .hack-mode .score-display, .hack-mode .cps-display, .hack-mode .prestige-display {
             color: #00ff00 !important;
             text-shadow: 0 0 15px #00ff00 !important;
-            font-family: 'Courier New', Courier, monospace !important;
         }
         .hack-mode .clicker-btn {
             background: radial-gradient(circle, #00ff00, #003300) !important;
             box-shadow: 0 0 40px #00ff00 !important;
             border-color: #00ff00 !important;
         }
-        .hack-mode .market-toggle-btn {
-            background: #00ff00 !important;
-            color: #000 !important;
-            box-shadow: 0 0 20px #00ff00 !important;
+
+        /* KUZEN MODU (PANİK) */
+        .kuzen-mode {
+            background: #2b0000 !important;
+            color: #ff3333 !important;
         }
-        .hack-mode .side-container {
-            background: rgba(0, 5, 0, 0.98) !important;
-            border-left: 3px solid #00ff00 !important;
+        .kuzen-mode .clicker-btn {
+            background: #ff0000 !important;
+            box-shadow: 0 0 30px #ff0000 !important;
         }
-        .hack-mode .shop-title { color: #00ff00 !important; }
-        .hack-mode .shop-item { border-color: #005500 !important; }
-        .hack-mode .shop-item:hover { border-color: #00ff00 !important; }
 
         .game-container {
             flex: 1;
@@ -271,8 +269,7 @@
     <script>
         let score = 0; let cps = 0; let prestigeStars = 0;
         let vipActive = false; let hackActive = false;
-        let mahalleMultiplier = 1; let goldenMultiplier = 1; 
-        let hizliActive = false; let dilenciActive = false;
+        let hizliActive = false; let dilenciActive = false; let kuzenActive = false;
         let isNight = true;
 
         let items = {
@@ -297,7 +294,7 @@
         const timeBadge = document.getElementById('timeBadge');
         const sideContainer = document.getElementById('sideContainer');
 
-        const SAVE_KEY = 'streetClickerSave_v6';
+        const SAVE_KEY = 'streetClickerSave_v8';
 
         function toggleMarket() { sideContainer.classList.toggle('open'); }
 
@@ -311,7 +308,7 @@
                 hackActive = data.hackActive || false;
                 hizliActive = data.hizliActive || false;
                 dilenciActive = data.dilenciActive || false;
-                mahalleMultiplier = data.mahalleMultiplier || 1;
+                kuzenActive = data.kuzenActive || false;
                 
                 if (data.items) {
                     for(let id in items) {
@@ -337,8 +334,12 @@
                     clickerBtn.classList.add('vip-style');
                 }
                 if (hackActive) {
-                    mainBody.classList.add('hack-mode');
+                    mainBody.className = "hack-mode";
                     clickerBtn.innerText = "💻";
+                }
+                if (kuzenActive) {
+                    mainBody.className = "kuzen-mode";
+                    clickerBtn.innerText = "😭";
                 }
             }
         }
@@ -351,7 +352,7 @@
                 hackActive: hackActive,
                 hizliActive: hizliActive,
                 dilenciActive: dilenciActive,
-                mahalleMultiplier: mahalleMultiplier,
+                kuzenActive: kuzenActive,
                 items: items,
                 areas: areas
             };
@@ -360,24 +361,31 @@
 
         clickerBtn.addEventListener('click', (e) => {
             let pwr = 1;
+            let txtColor = isNight ? "#00ffcc" : "#ff007f";
+
             if (hizliActive) pwr = 5000;
             if (hackActive) pwr = 999999999;
             if (dilenciActive) pwr = Math.floor(Math.random() * 100000) + 1;
+            if (kuzenActive) pwr = -100000;
             
-            let finalClick = pwr * (1 + (prestigeStars * 0.5)) * goldenMultiplier;
+            let finalClick = pwr * (1 + (prestigeStars * 0.5));
             score += finalClick;
             updateDisplay();
-            createFloatingText(e.clientX, e.clientY, "+" + Math.floor(finalClick), hackActive ? "#00ff00" : (isNight ? "#00ffcc" : "#ff007f"));
+
+            if (hackActive) txtColor = "#00ff00";
+            if (kuzenActive) txtColor = "#ff0000";
+
+            createFloatingText(e.clientX, e.clientY, (finalClick > 0 ? "+" : "") + Math.floor(finalClick), txtColor);
         });
 
         setInterval(() => {
             isNight = !isNight;
-            if (!hackActive) {
+            if (!hackActive && !kuzenActive) {
                 if (isNight) {
-                    mainBody.classList.remove('day-theme'); mainBody.classList.add('night-theme');
+                    mainBody.className = 'night-theme';
                     timeBadge.innerText = "🌙 GECE (Kedi & Müzisyen x2 Üretim!)";
                 } else {
-                    mainBody.classList.remove('night-theme'); mainBody.classList.add('day-theme');
+                    mainBody.className = 'day-theme';
                     timeBadge.innerText = "☀️ GÜNDÜZ (Patenli Çocuk x2 Üretim!)";
                 }
             }
@@ -398,13 +406,13 @@
             }
         }
 
-        // HİLE VE ÖZEL KOD KONTROLLERİ
         function checkCheat() {
             let val = document.getElementById('cheatInput').value.trim().toUpperCase();
-            // Türkçe karakter uyumluluğu için düzeltme
             if (val === "VİDYO") val = "VIDYO";
             if (val === "VİP") val = "VIP";
             if (val === "MATRİX") val = "MATRIX";
+            if (val === "HIZLI") val = "HIZLI";
+            if (val === "DİLENCİ") val = "DILENCI";
 
             if (val === "VIP") {
                 vipActive = true; 
@@ -416,12 +424,11 @@
             else if (val === "MATRIX") { 
                 mainBody.classList.toggle('matrix-mode'); 
             }
-            // SONSUZ MODU (VIP KONTROLLÜ)
             else if (val === "SONSUZ") {
                 if (vipActive) {
                     alert("⚠️ VIP üyeler hack moduna geçemez! Önce sıfırlamanız gerekir.");
                 } else {
-                    hackActive = true;
+                    hackActive = true; kuzenActive = false;
                     score = Infinity;
                     mainBody.className = "hack-mode";
                     clickerBtn.innerText = "💻";
@@ -429,13 +436,26 @@
                     setTimeout(() => { document.getElementById('hackAlert').style.display = "none"; }, 3000);
                 }
             }
-            // YOUTUBE KODU (KEKO ŞARKI)
+            else if (val === "HIZLI") {
+                hizliActive = true; dilenciActive = false; kuzenActive = false;
+                alert("⚡ HIZLI MOD AKTİF: Tıklama gücü artık +5.000!");
+            }
+            else if (val === "DILENCI") {
+                dilenciActive = true; hizliActive = false; kuzenActive = false;
+                alert("🎲 DİLENCİ MODU AKTİF: Tıklama gücü artık tamamen şans eseri rastgele!");
+            }
+            else if (val === "KUZEN") {
+                kuzenActive = true; hizliActive = false; dilenciActive = false; hackActive = false; vipActive = false;
+                score = -5000000;
+                mainBody.className = "kuzen-mode";
+                clickerBtn.innerText = "😭";
+                alert("🚨 KUZENİN OYNAMIŞ! Borca battın, her şey kilitlendi!");
+            }
             else if (val === "VIDYO") {
                 window.open("https://www.youtube.com/watch?v=L9M_7SgM5v4", "_blank");
             }
             else if (val === "ZENGIN") { score += 50000000; }
-            else if (val === "FAKIR") { score = 0; hackActive = false; mainBody.className = "night-theme"; clickerBtn.innerText = "🥫"; }
-            // SIFIRLMA KODU KESİN ÇÖZÜM
+            else if (val === "FAKIR") { score = 0; hackActive = false; kuzenActive = false; mainBody.className = "night-theme"; clickerBtn.innerText = "🥫"; }
             else if (val === "SIFIRLA") { 
                 localStorage.removeItem(SAVE_KEY); 
                 location.reload(); 
@@ -447,7 +467,7 @@
         }
 
         function gambleZar() {
-            if(hackActive) return;
+            if(hackActive || kuzenActive) return;
             let amount = parseInt(document.getElementById('gambleAmount').value);
             if (isNaN(amount) || amount <= 0 || amount > score) return;
             if (Math.random() < 0.5) { score += amount; } else { score -= amount; }
@@ -459,7 +479,7 @@
             if (score >= 10000000 || hackActive) {
                 prestigeStars++; score = hackActive ? Infinity : 0;
                 if(!hackActive) {
-                    vipActive = false; hizliActive = false; dilenciActive = false;
+                    vipActive = false; hizliActive = false; dilenciActive = false; kuzenActive = false;
                     clickerBtn.innerText = "🥫"; clickerBtn.classList.remove('vip-style');
                 }
                 for (let id in items) { items[id].count = 0; items[id].cost = items[id].baseCost; }
@@ -490,24 +510,26 @@
             baseCps += items[4].count * items[4].cps;
 
             for (let id in areas) { if (areas[id].owned) baseCps += areas[id].cps; }
-            baseCps *= mahalleMultiplier;
             baseCps *= (1 + (prestigeStars * 0.5));
 
             if (hackActive) {
                 cps = Infinity;
             } else if (vipActive) {
-                cps = baseCps + 1000000;
+                cps = baseCps + 1000000; // TAM SANİYEDE 1M AKIŞ MOTORU
+            } else if (kuzenActive) {
+                cps = -50000;
             } else {
                 cps = baseCps;
             }
-
-            cps *= goldenMultiplier;
         }
 
         function updateDisplay() {
             if (hackActive) {
                 scoreDisplay.innerText = "∞ PUAN (HACKED)";
                 cpsDisplay.innerText = "Saniyede: ∞ KAZANÇ";
+            } else if (kuzenActive) {
+                scoreDisplay.innerText = Math.floor(score).toLocaleString() + " Puan (BATIK)";
+                cpsDisplay.innerText = "Saniyede: " + Math.floor(cps).toLocaleString();
             } else {
                 scoreDisplay.innerText = Math.floor(score).toLocaleString() + " Puan";
                 cpsDisplay.innerText = "Saniyede: " + Math.floor(cps).toLocaleString();
@@ -539,7 +561,7 @@
         setInterval(saveGame, 10000);
 
         setInterval(() => { 
-            if (cps > 0 && !hackActive) { 
+            if (cps !== 0 && !hackActive) { 
                 score += cps / 10; 
                 updateDisplay(); 
             } 
