@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Street Clicker 😎</title>
+    <title>Street Clicker 😎 - VIP Edition</title>
     <style>
         * {
             box-sizing: border-box;
@@ -14,7 +14,7 @@
         }
 
         body {
-            background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.85)), 
+            background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.85)),
                         url('https://images.unsplash.com/photo-1514565131-fce0801e5785?q=80&w=1000') no-repeat center center fixed;
             background-size: cover;
             color: #fff;
@@ -113,31 +113,61 @@
             background: rgba(255, 255, 255, 0.02) !important;
         }
 
-        .item-info h3 {
-            font-size: 1.1rem;
-            color: #fff;
+        .item-info h3 { font-size: 1.1rem; color: #fff; }
+        .item-info p { font-size: 0.85rem; color: #aaa; }
+        .item-cost { font-weight: bold; color: #ff007f; }
+        .item-count { background: #333; padding: 2px 8px; border-radius: 20px; font-size: 0.8rem; margin-left: 10px; }
+
+        /* Chat / Kod Bölümü */
+        .cheat-box {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(20, 20, 20, 0.95);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #555;
+            z-index: 100;
         }
 
-        .item-info p {
-            font-size: 0.85rem;
-            color: #aaa;
+        .cheat-box input {
+            background: #222;
+            border: 1px solid #444;
+            color: #00ffcc;
+            padding: 5px;
+            outline: none;
+            width: 120px;
         }
 
-        .item-cost {
+        .cheat-box button {
+            background: #00ffcc;
+            border: none;
+            color: #000;
+            padding: 5px 10px;
+            cursor: pointer;
             font-weight: bold;
-            color: #ff007f;
-            text-shadow: 0 0 5px rgba(255, 0, 127, 0.3);
         }
 
-        .item-count {
-            background: #333;
-            padding: 2px 8px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            margin-left: 10px;
+        /* Patron Geldi Duyurusu */
+        #bossAlert {
+            position: fixed;
+            top: 25%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 5rem;
+            color: #ff0000;
+            text-shadow: 0 0 20px #000, 0 0 40px #ff0000;
+            font-weight: 900;
+            z-index: 999;
+            display: none;
+            animation: bossAnim 0.5s infinite alternate;
         }
 
-        /* Uçan Sayı Efekti */
+        @keyframes bossAnim {
+            from { transform: translateX(-50%) scale(1); }
+            to { transform: translateX(-50%) scale(1.1); }
+        }
+
         .floating-text {
             position: absolute;
             color: #00ffcc;
@@ -145,158 +175,130 @@
             font-size: 1.5rem;
             pointer-events: none;
             animation: floatUp 0.8s ease-out forwards;
-            text-shadow: 0 0 5px #00ffcc;
         }
 
         @keyframes floatUp {
-            0% { opacity: 1; transform: translateY(0) scale(1); }
-            100% { opacity: 0; transform: translateY(-100px) scale(1.2); }
+            0% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-100px); }
         }
     </style>
 </head>
 <body>
 
-    <!-- Sol Taraf: Tıklama Alanı -->
+    <!-- Büyük Kırmızı Uyarı -->
+    <div id="bossAlert">PATRON GELDİ</div>
+
     <div class="game-container" id="gameContainer">
         <div class="score-display" id="scoreDisplay">0 Sokak Puanı</div>
         <div class="cps-display" id="cpsDisplay">Saniyede: 0</div>
-        
-        <!-- Ortadaki Tıklama Butonu (Sprey Kutusu Emojisi var, değiştirebilirsin) -->
         <div class="clicker-btn" id="clickerBtn">🥫</div>
     </div>
 
-    <!-- Sağ Taraf: Shop Sistemi -->
     <div class="shop-container">
         <div class="shop-title">Sokak Dükkanı</div>
-        
-        <!-- Ürün 1 -->
-        <div class="shop-item disabled" id="item1" onclick="buyItem(1)">
-            <div class="item-info">
-                <h3>Sokak Kedisi 🐱 <span class="item-count" id="count1">0</span></h3>
-                <p>Saniyede +0.5 puan verir.</p>
-            </div>
-            <div class="item-cost" id="cost1">15 Puan</div>
-        </div>
+        <div class="shop-item disabled" id="item1" onclick="buyItem(1)"><div class="item-info"><h3>Sokak Kedisi 🐱 <span class="item-count" id="count1">0</span></h3><p>+0.5 CPS</p></div><div class="item-cost" id="cost1">15</div></div>
+        <div class="shop-item disabled" id="item2" onclick="buyItem(2)"><div class="item-info"><h3>Patenli Çocuk 🛹 <span class="item-count" id="count2">0</span></h3><p>+4 CPS</p></div><div class="item-cost" id="cost2">100</div></div>
+        <div class="shop-item disabled" id="item3" onclick="buyItem(3)"><div class="item-info"><h3>Sokak Müzisyeni 🎸 <span class="item-count" id="count3">0</span></h3><p>+32 CPS</p></div><div class="item-cost" id="cost3">1100</div></div>
+        <div class="shop-item disabled" id="item4" onclick="buyItem(4)"><div class="item-info"><h3>Grafiti Sanatçısı 🎨 <span class="item-count" id="count4">0</span></h3><p>+260 CPS</p></div><div class="item-cost" id="cost4">12000</div></div>
+    </div>
 
-        <!-- Ürün 2 -->
-        <div class="shop-item disabled" id="item2" onclick="buyItem(2)">
-            <div class="item-info">
-                <h3>Patenli Çocuk 🛹 <span class="item-count" id="count2">0</span></h3>
-                <p>Saniyede +4 puan verir.</p>
-            </div>
-            <div class="item-cost" id="cost2">100 Puan</div>
-        </div>
-
-        <!-- Ürün 3 -->
-        <div class="shop-item disabled" id="item3" onclick="buyItem(3)">
-            <div class="item-info">
-                <h3>Sokak Müzisyeni 🎸 <span class="item-count" id="count3">0</span></h3>
-                <p>Saniyede +32 puan verir.</p>
-            </div>
-            <div class="item-cost" id="cost3">1100 Puan</div>
-        </div>
-
-        <!-- Ürün 4 -->
-        <div class="shop-item disabled" id="item4" onclick="buyItem(4)">
-            <div class="item-info">
-                <h3>Grafiti Sanatçısı 🎨 <span class="item-count" id="count4">0</span></h3>
-                <p>Saniyede +260 puan verir.</p>
-            </div>
-            <div class="item-cost" id="cost4">12000 Puan</div>
-        </div>
+    <!-- Sağ Alttaki Gizli Kod Alanı -->
+    <div class="cheat-box">
+        <input type="text" id="cheatInput" placeholder="Kod yaz...">
+        <button onclick="checkCheat()">Gönder</button>
     </div>
 
     <script>
-        // Oyun Verileri
         let score = 0;
         let cps = 0;
+        let vipActive = false;
 
         const items = {
-            1: { name: "Sokak Kedisi", cost: 15, cps: 0.5, count: 0, baseCost: 15 },
-            2: { name: "Patenli Çocuk", cost: 100, cps: 4, count: 0, baseCost: 100 },
-            3: { name: "Sokak Müzisyeni", cost: 1100, cps: 32, count: 0, baseCost: 1100 },
-            4: { name: "Grafiti Sanatçısı", cost: 12000, cps: 260, count: 0, baseCost: 12000 }
+            1: { name: "Kedi", cost: 15, cps: 0.5, count: 0, baseCost: 15 },
+            2: { name: "Paten", cost: 100, cps: 4, count: 0, baseCost: 100 },
+            3: { name: "Müzisyen", cost: 1100, cps: 32, count: 0, baseCost: 1100 },
+            4: { name: "Grafiti", cost: 12000, cps: 260, count: 0, baseCost: 12000 }
         };
 
-        // Elementler
         const scoreDisplay = document.getElementById('scoreDisplay');
         const cpsDisplay = document.getElementById('cpsDisplay');
         const clickerBtn = document.getElementById('clickerBtn');
-        const gameContainer = document.getElementById('gameContainer');
+        const bossAlert = document.getElementById('bossAlert');
 
-        // Tıklama Fonksiyonu
         clickerBtn.addEventListener('click', (e) => {
             score += 1;
             updateDisplay();
             createFloatingText(e.clientX, e.clientY, "+1");
         });
 
-        // Ürün Satın Alma
+        // Hile Kontrolü
+        function checkCheat() {
+            const val = document.getElementById('cheatInput').value;
+            if (val === "VİP") {
+                vipActive = true;
+                bossAlert.style.display = "block"; // PATRON GELDİ yazısını aç
+                
+                // 5 saniye sonra ekrandaki yazı kaybolsun (puan gelmeye devam eder)
+                setTimeout(() => { bossAlert.style.display = "none"; }, 5000); 
+                
+                calculateCps();
+                updateDisplay();
+                document.getElementById('cheatInput').value = ""; // Kutuyu temizle
+            }
+        }
+
         function buyItem(id) {
             let item = items[id];
             if (score >= item.cost) {
                 score -= item.cost;
                 item.count++;
-                // Fiyatı her alışta %15 arttır
                 item.cost = Math.floor(item.baseCost * Math.pow(1.15, item.count));
-                
                 calculateCps();
                 updateDisplay();
             }
         }
 
-        // Toplam CPS Hesaplama
         function calculateCps() {
-            cps = 0;
+            let baseCps = 0;
             for (let id in items) {
-                cps += items[id].count * items[id].cps;
+                baseCps += items[id].count * items[id].cps;
             }
+            // VIP aktifse ekstra 1 milyon ekle
+            cps = baseCps + (vipActive ? 1000000 : 0);
         }
 
-        // Ekranı Güncelleme (Fiyatlar, Buton kilitleri vb.)
         function updateDisplay() {
-            scoreDisplay.innerText = Math.floor(score) + " Sokak Puanı";
-            cpsDisplay.innerText = "Saniyede: " + cps.toFixed(1);
-
+            scoreDisplay.innerText = Math.floor(score).toLocaleString() + " Sokak Puanı";
+            cpsDisplay.innerText = "Saniyede: " + cps.toLocaleString();
+            
             for (let id in items) {
                 let item = items[id];
-                document.getElementById(`cost${id}`).innerText = item.cost + " Puan";
+                document.getElementById(`cost${id}`).innerText = item.cost.toLocaleString() + " Puan";
                 document.getElementById(`count${id}`).innerText = item.count;
-
-                // Parası yetiyorsa aktif et, yetmiyorsa kilitle
-                let itemElement = document.getElementById(`item${id}`);
-                if (score >= item.cost) {
-                    itemElement.classList.remove('disabled');
-                } else {
-                    itemElement.classList.add('disabled');
-                }
+                let el = document.getElementById(`item${id}`);
+                if (score >= item.cost) el.classList.remove('disabled');
+                else el.classList.add('disabled');
             }
         }
 
-        // Tıklayınca Sayı Uçurma Efekti
         function createFloatingText(x, y, text) {
             const el = document.createElement('div');
             el.className = 'floating-text';
             el.innerText = text;
             el.style.left = `${x - 20}px`;
             el.style.top = `${y - 20}px`;
-            
             document.body.appendChild(el);
-
-            setTimeout(() => {
-                el.remove();
-            }, 800);
+            setTimeout(() => el.remove(), 800);
         }
 
-        // Saniyelik Puan Artışı (Oyun Döngüsü)
+        // Oyun Döngüsü
         setInterval(() => {
             if (cps > 0) {
-                score += cps / 10; // Her 100ms'de bir artış sağlamak için 10'a bölüyoruz
+                score += cps / 10;
                 updateDisplay();
             }
         }, 100);
 
-        // İlk çalıştırma
         updateDisplay();
     </script>
 </body>
