@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Street Clicker 😎 - Ultimate Edition</title>
+    <title>Street Clicker 😎 - Tycoon &</title>
     <style>
         * {
             box-sizing: border-box;
@@ -24,31 +24,17 @@
             transition: background 0.5s;
         }
 
-        /* Polis Efekti İçin Ekran Flaş Modu */
-        .police-mode {
-            animation: policeFlash 0.4s infinite;
-        }
+        .police-mode { animation: policeFlash 0.4s infinite; }
         @keyframes policeFlash {
-            0% { background-color: rgba(255, 0, 0, 0.4); }
-            50% { background-color: rgba(0, 0, 255, 0.4); }
+            0% { background-color: rgba(255, 0, 0, 0.3); }
+            50% { background-color: rgba(0, 0, 255, 0.3); }
         }
 
-        /* VIP Modu Sallantı Efekti */
-        .shake-screen {
-            animation: screenShake 0.1s infinite;
-        }
+        .shake-screen { animation: screenShake 0.1s infinite; }
         @keyframes screenShake {
-            0% { transform: translate(1px, 1px) rotate(0deg); }
-            10% { transform: translate(-1px, -2px) rotate(-1deg); }
-            20% { transform: translate(-3px, 0px) rotate(1deg); }
-            30% { transform: translate(0px, 2px) rotate(0deg); }
-            40% { transform: translate(1px, -1px) rotate(1deg); }
-            50% { transform: translate(-1px, 2px) rotate(-1deg); }
-            60% { transform: translate(-3px, 1px) rotate(0deg); }
-            70% { transform: translate(2px, 1px) rotate(-1deg); }
-            80% { transform: translate(-1px, -1px) rotate(1deg); }
-            90% { transform: translate(2px, 2px) rotate(0deg); }
-            100% { transform: translate(1px, -2px) rotate(-1deg); }
+            0% { transform: translate(1px, 1px); }
+            50% { transform: translate(-1px, -1px); }
+            100% { transform: translate(1px, -1px); }
         }
 
         /* Oyun Alanı */
@@ -59,6 +45,13 @@
             align-items: center;
             justify-content: center;
             position: relative;
+        }
+
+        .prestige-display {
+            font-size: 1.2rem;
+            color: #ffd700;
+            text-shadow: 0 0 10px #ffd700;
+            margin-bottom: 10px;
         }
 
         .score-display {
@@ -86,25 +79,22 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: transform 0.05s, box-shadow 0.1s, background 0.5s;
+            transition: transform 0.05s, box-shadow 0.1s;
+            z-index: 5;
         }
 
-        .clicker-btn:active {
-            transform: scale(0.95);
-            box-shadow: 0 0 50px #ff007f, inset 0 0 30px rgba(0,0,0,0.8);
-        }
+        .clicker-btn:active { transform: scale(0.95); }
 
-        /* VIP Aktifken Buton Tasarımı */
         .clicker-btn.vip-style {
             background: radial-gradient(circle, #ffd700, #b8860b) !important;
-            box-shadow: 0 0 40px #ffd700, inset 0 0 20px rgba(0,0,0,0.5) !important;
+            box-shadow: 0 0 40px #ffd700 !important;
             border-color: #ffd700 !important;
         }
 
-        /* Dükkan Paneli */
-        .shop-container {
+        /* Sağ Panel (Dükkan + Kumar) */
+        .side-container {
             flex: 1;
-            background: rgba(15, 15, 25, 0.9);
+            background: rgba(15, 15, 25, 0.95);
             border-left: 3px solid #00ffcc;
             box-shadow: -5px 0 20px rgba(0, 255, 204, 0.2);
             padding: 20px;
@@ -115,153 +105,139 @@
 
         .shop-title {
             text-align: center;
-            font-size: 2rem;
+            font-size: 1.8rem;
             color: #00ffcc;
-            text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             border-bottom: 2px solid #333;
-            padding-bottom: 10px;
+            padding-bottom: 5px;
         }
 
         .shop-item {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid #444;
             border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 15px;
+            padding: 12px;
+            margin-bottom: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
-            transition: background 0.2s, border-color 0.2s;
         }
 
-        .shop-item:hover {
-            background: rgba(0, 255, 204, 0.1);
-            border-color: #00ffcc;
+        .shop-item:hover { border-color: #00ffcc; background: rgba(0, 255, 204, 0.05); }
+        .shop-item.disabled { opacity: 0.4; cursor: not-allowed; border-color: #444 !important; }
+
+        /* Kumar Alanı */
+        .gamble-box {
+            background: rgba(255, 0, 127, 0.1);
+            border: 2px dashed #ff007f;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .gamble-box input {
+            width: 60%;
+            padding: 5px;
+            background: #222;
+            border: 1px solid #ff007f;
+            color: #fff;
+            text-align: center;
+            outline: none;
+        }
+        .gamble-box button {
+            background: #ff007f;
+            border: none;
+            color: white;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-left: 5px;
         }
 
-        .shop-item.disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            border-color: #444 !important;
-            background: rgba(255, 255, 255, 0.02) !important;
+        /* İtibar Butonu */
+        .prestige-btn {
+            background: #ffd700;
+            color: #000;
+            font-weight: bold;
+            padding: 10px;
+            text-align: center;
+            border-radius: 5px;
+            margin-top: 15px;
+            cursor: pointer;
+            display: none;
         }
 
-        .item-info h3 { font-size: 1.1rem; color: #fff; }
-        .item-info p { font-size: 0.85rem; color: #aaa; }
-        .item-cost { font-weight: bold; color: #ff007f; }
-        .item-count { background: #333; padding: 2px 8px; border-radius: 20px; font-size: 0.8rem; margin-left: 10px; }
+        /* Altın Sprey Kutusu */
+        .golden-spray {
+            position: absolute;
+            font-size: 3.5rem;
+            cursor: pointer;
+            animation: goldenGlow 1s infinite alternate;
+            z-index: 99;
+            user-select: none;
+        }
+        @keyframes goldenGlow {
+            from { filter: drop-shadow(0 0 5px #ffd700); transform: scale(1); }
+            to { filter: drop-shadow(0 0 20px #ffd700); transform: scale(1.2); }
+        }
 
         /* Chat / Kod Bölümü */
         .cheat-box {
             position: fixed;
             bottom: 10px;
-            right: 10px;
+            left: 10px;
             background: rgba(20, 20, 20, 0.95);
-            padding: 10px;
+            padding: 8px;
             border-radius: 8px;
             border: 1px solid #555;
             z-index: 100;
         }
+        .cheat-box input { background: #222; border: 1px solid #444; color: #00ffcc; padding: 5px; width: 130px; outline: none; }
+        .cheat-box button { background: #00ffcc; border: none; padding: 5px 10px; cursor: pointer; font-weight: bold; }
 
-        .cheat-box input {
-            background: #222;
-            border: 1px solid #444;
-            color: #00ffcc;
-            padding: 5px;
-            outline: none;
-            width: 140px;
-        }
+        /* Bildirimler */
+        .alert-text { position: fixed; top: 25%; left: 50%; transform: translateX(-50%); font-size: 5rem; font-weight: 900; z-index: 999; display: none; text-align: center; }
+        #bossAlert { color: #ffcc00; text-shadow: 0 0 30px #ffcc00; }
+        #policeAlert { color: #ff0000; text-shadow: 0 0 30px #ff0000; }
 
-        .cheat-box button {
-            background: #00ffcc;
-            border: none;
-            color: #000;
-            padding: 5px 10px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        /* Büyük Bildirimler */
-        .alert-text {
-            position: fixed;
-            top: 25%;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 5rem;
-            font-weight: 900;
-            z-index: 999;
-            display: none;
-            text-align: center;
-            pointer-events: none;
-        }
-
-        #bossAlert {
-            color: #ffcc00;
-            text-shadow: 0 0 20px #000, 0 0 40px #ffcc00;
-            animation: bossAnim 0.3s infinite alternate;
-        }
-
-        #policeAlert {
-            color: #ff0000;
-            text-shadow: 0 0 20px #000, 0 0 40px #ff0000;
-            animation: bossAnim 0.3s infinite alternate;
-        }
-
-        @keyframes bossAnim {
-            from { transform: translateX(-50%) scale(1); }
-            to { transform: translateX(-50%) scale(1.1); }
-        }
-
-        .floating-text {
-            position: absolute;
-            color: #00ffcc;
-            font-weight: bold;
-            font-size: 1.5rem;
-            pointer-events: none;
-            animation: floatUp 0.8s ease-out forwards;
-        }
-
-        @keyframes floatUp {
-            0% { opacity: 1; transform: translateY(0); }
-            100% { opacity: 0; transform: translateY(-100px); }
-        }
-
-        /* Grafiti Leke Efekti */
-        .graffiti-splat {
-            position: absolute;
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            pointer-events: none;
-            opacity: 0.7;
-            filter: blur(5px);
-            z-index: 1;
-        }
+        .floating-text { position: absolute; color: #00ffcc; font-weight: bold; font-size: 1.5rem; pointer-events: none; animation: floatUp 0.8s ease-out forwards; }
+        @keyframes floatUp { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-100px); } }
     </style>
 </head>
 <body id="mainBody">
 
-    <!-- Bildirim Yazıları -->
     <div id="bossAlert" class="alert-text">👑 PATRON GELDİ 👑</div>
     <div id="policeAlert" class="alert-text">🚨 POLİS BASKINI! 🚨</div>
 
     <div class="game-container" id="gameContainer">
-        <div class="score-display" id="scoreDisplay">0 Sokak Puanı</div>
+        <div class="prestige-display" id="prestigeDisplay">⭐ Sokak İtibarı: 0 (Bonus: +0%)</div>
+        <div class="score-display" id="scoreDisplay">0 Puan</div>
         <div class="cps-display" id="cpsDisplay">Saniyede: 0</div>
+        
         <div class="clicker-btn" id="clickerBtn">🥫</div>
     </div>
 
-    <div class="shop-container">
+    <div class="side-container">
         <div class="shop-title">Sokak Dükkanı</div>
-        <div class="shop-item disabled" id="item1" onclick="buyItem(1)"><div class="item-info"><h3>Sokak Kedisi 🐱 <span class="item-count" id="count1">0</span></h3><p>+0.5 CPS</p></div><div class="item-cost" id="cost1">15</div></div>
-        <div class="shop-item disabled" id="item2" onclick="buyItem(2)"><div class="item-info"><h3>Patenli Çocuk 🛹 <span class="item-count" id="count2">0</span></h3><p>+4 CPS</p></div><div class="item-cost" id="cost2">100</div></div>
-        <div class="shop-item disabled" id="item3" onclick="buyItem(3)"><div class="item-info"><h3>Sokak Müzisyeni 🎸 <span class="item-count" id="count3">0</span></h3><p>+32 CPS</p></div><div class="item-cost" id="cost3">1100</div></div>
-        <div class="shop-item disabled" id="item4" onclick="buyItem(4)"><div class="item-info"><h3>Grafiti Sanatçısı 🎨 <span class="item-count" id="count4">0</span></h3><p>+260 CPS</p></div><div class="item-cost" id="cost4">12000</div></div>
+        <div class="shop-item disabled" id="item1" onclick="buyItem(1)"><div class="item-info"><h3>Sokak Kedisi 🐱 <span id="count1">0</span></h3><p>+0.5 CPS</p></div><div id="cost1">15</div></div>
+        <div class="shop-item disabled" id="item2" onclick="buyItem(2)"><div class="item-info"><h3>Patenli Çocuk 🛹 <span id="count2">0</span></h3><p>+4 CPS</p></div><div id="cost2">100</div></div>
+        <div class="shop-item disabled" id="item3" onclick="buyItem(3)"><div class="item-info"><h3>Sokak Müzisyeni 🎸 <span id="count3">0</span></h3><p>+32 CPS</p></div><div id="cost3">1100</div></div>
+        <div class="shop-item disabled" id="item4" onclick="buyItem(4)"><div class="item-info"><h3>Grafiti Sanatçısı 🎨 <span id="count4">0</span></h3><p>+260 CPS</p></div><div id="cost4">12000</div></div>
+        
+        <!-- Rebirth Butonu -->
+        <div class="prestige-btn" id="prestigeBtn" onclick="doPrestige()">⭐ İTİBARINI ARTTIR (Maliyet: 10M Puan)</div>
+
+        <!-- Kumar Bölümü -->
+        <div class="gamble-box">
+            <h4>🎲 Sokak Zarı (Yazı-Tura)</h4>
+            <p style="font-size:0.8rem; color:#aaa; margin-bottom:5px;">%50 şansla paranı ikiye katla!</p>
+            <input type="number" id="gambleAmount" placeholder="Puan miktarı">
+            <button onclick="gambleZar()">Zar At</button>
+        </div>
     </div>
 
-    <!-- Sağ Alttaki Gizli Kod Alanı -->
+    <!-- Sol Alttaki Kod Girişi -->
     <div class="cheat-box">
         <input type="text" id="cheatInput" placeholder="Sokak şifresi...">
         <button onclick="checkCheat()">Gönder</button>
@@ -270,166 +246,189 @@
     <script>
         let score = 0;
         let cps = 0;
+        let prestigeStars = 0;
         let vipActive = false;
         let policeActive = false;
+        let mahalleMultiplier = 1;
+        let goldenMultiplier = 1;
+        let hizliActive = false;
 
         const items = {
-            1: { name: "Kedi", cost: 15, cps: 0.5, count: 0, baseCost: 15 },
-            2: { name: "Paten", cost: 100, cps: 4, count: 0, baseCost: 100 },
-            3: { name: "Müzisyen", cost: 1100, cps: 32, count: 0, baseCost: 1100 },
-            4: { name: "Grafiti", cost: 12000, cps: 260, count: 0, baseCost: 12000 }
+            1: { cost: 15, cps: 0.5, count: 0, baseCost: 15 },
+            2: { cost: 100, cps: 4, count: 0, baseCost: 100 },
+            3: { cost: 1100, cps: 32, count: 0, baseCost: 1100 },
+            4: { cost: 12000, cps: 260, count: 0, baseCost: 12000 }
         };
 
         const scoreDisplay = document.getElementById('scoreDisplay');
         const cpsDisplay = document.getElementById('cpsDisplay');
         const clickerBtn = document.getElementById('clickerBtn');
-        const bossAlert = document.getElementById('bossAlert');
-        const policeAlert = document.getElementById('policeAlert');
         const mainBody = document.getElementById('mainBody');
         const gameContainer = document.getElementById('gameContainer');
+        const prestigeDisplay = document.getElementById('prestigeDisplay');
+        const prestigeBtn = document.getElementById('prestigeBtn');
 
         clickerBtn.addEventListener('click', (e) => {
-            let clickPower = vipActive ? 1000 : 1; // VIP ise tıklama gücü de 1000 olur
-            score += clickPower;
+            let pwr = 1;
+            if (vipActive) pwr = 1000;
+            if (hizliActive) pwr = 5000;
+            
+            // İtibar ve Altın Sprey çarpanları ekleniyor
+            let finalClick = pwr * (1 + (prestigeStars * 0.5)) * goldenMultiplier;
+            score += finalClick;
             updateDisplay();
-            createFloatingText(e.clientX, e.clientY, "+" + clickPower);
+            createFloatingText(e.clientX, e.clientY, "+" + Math.floor(finalClick));
         });
 
-        // Gelişmiş Kod Sistemi
         function checkCheat() {
             const val = document.getElementById('cheatInput').value.trim().toUpperCase();
             
-            // 1. YENİ VIP KODU
             if (val === "VİP" || val === "VIP") {
-                vipActive = true;
-                policeActive = false; // Polisi iptal eder
-                mainBody.classList.remove('police-mode');
-                
-                // VIP Efektleri: Ekran sarsılır, buton taca dönüşür
-                mainBody.classList.add('shake-screen');
-                clickerBtn.innerText = "👑";
-                clickerBtn.classList.add('vip-style');
-                bossAlert.style.display = "block";
-                
-                setTimeout(() => { 
-                    bossAlert.style.display = "none"; 
-                    mainBody.classList.remove('shake-screen'); // 4 saniye sonra sallantı durur
-                }, 4000); 
-                
-                calculateCps();
-                updateDisplay();
+                vipActive = true; policeActive = false; mainBody.classList.remove('police-mode');
+                mainBody.classList.add('shake-screen'); clickerBtn.innerText = "👑"; clickerBtn.classList.add('vip-style');
+                document.getElementById('bossAlert').style.display = "block";
+                setTimeout(() => { document.getElementById('bossAlert').style.display = "none"; mainBody.classList.remove('shake-screen'); }, 4000);
             }
-            
-            // 2. POLİS KODU (Risk/Ceza Kodu)
             else if (val === "POLİS" || val === "POLIS") {
-                policeActive = true;
-                vipActive = false; // VIP'yi iptal eder
-                clickerBtn.innerText = "🥫";
-                clickerBtn.classList.remove('vip-style');
-                
-                mainBody.classList.add('police-mode');
-                policeAlert.style.display = "block";
-                
-                setTimeout(() => { 
-                    policeAlert.style.display = "none"; 
+                policeActive = true; vipActive = false; clickerBtn.innerText = "🥫"; clickerBtn.classList.remove('vip-style');
+                mainBody.classList.add('police-mode'); document.getElementById('policeAlert').style.display = "block";
+                setTimeout(() => { document.getElementById('policeAlert').style.display = "none"; mainBody.classList.remove('police-mode'); policeActive = false; calculateCps(); updateDisplay(); }, 15000);
+            }
+            else if (val === "TOMA") {
+                if(policeActive) {
+                    policeActive = false;
                     mainBody.classList.remove('police-mode');
-                    policeActive = false; // 7 saniye sonra polis gider
-                    calculateCps();
-                    updateDisplay();
-                }, 7000);
-
-                calculateCps();
-                updateDisplay();
-            }
-
-            // 3. KOPİL KODU (Anında Nakit)
-            else if (val === "KOPİL" || val === "KOPIL") {
-                score += 500000;
-                createFloatingText(window.innerWidth / 2, window.innerHeight / 2, "+500.000 Puan!", "#00ffcc");
-                updateDisplay();
-            }
-
-            // 4. GRAFİTİ KODU (Ekranı Boyama Hilesi)
-            else if (val === "GRAFİTİ" || val === "GRAFITI") {
-                for(let i=0; i<15; i++) {
-                    setTimeout(createGraffitiSplat, i * 100);
+                    document.getElementById('policeAlert').style.display = "none";
+                    createFloatingText(window.innerWidth/2, window.innerHeight/2, "🚨 TOMA POLİSİ KOVDU!", "#00ffcc");
                 }
             }
+            else if (val === "MAHALLE") {
+                mahalleMultiplier = 2;
+                createFloatingText(window.innerWidth/2, window.innerHeight/2, "🏘️ MAHALLE DESTEĞİ: CPS x2!", "#ffd700");
+            }
+            else if (val === "FAKİR" || val === "FAKIR") {
+                score = 0;
+                createFloatingText(window.innerWidth/2, window.innerHeight/2, "💸 TÜM PARAN ÇALINDI!", "#ff0000");
+            }
+            else if (val === "ZENGİN" || val === "ZENGIN") {
+                score += 50000000;
+            }
+            else if (val === "HIZLI") {
+                hizliActive = true;
+                createFloatingText(window.innerWidth/2, window.innerHeight/2, "⚡ TIKLAMA GÜCÜ UÇTU!", "#ffff00");
+            }
 
-            document.getElementById('cheatInput').value = ""; // Kutuyu temizle
+            calculateCps(); updateDisplay();
+            document.getElementById('cheatInput').value = "";
+        }
+
+        // ZAR KUMARI SISTEMI
+        function gambleZar() {
+            let amount = parseInt(document.getElementById('gambleAmount').value);
+            if (isNaN(amount) || amount <= 0 || amount > score) {
+                alert("Geçersiz miktar veya yetersiz puan!");
+                return;
+            }
+            
+            if (Math.random() < 0.5) {
+                score += amount;
+                alert("TEBRİKLER! " + amount.toLocaleString() + " puan kazandın! 🎲");
+            } else {
+                score -= amount;
+                alert("KAYBETTİN! " + amount.toLocaleString() + " puan sokakta eridi... 📉");
+            }
+            updateDisplay();
+            document.getElementById('gambleAmount').value = "";
+        }
+
+        // PRESTIGE (REBIRTH) TETIKLEME
+        function doPrestige() {
+            if (score >= 10000000) {
+                prestigeStars++;
+                score = 0;
+                cps = 0;
+                vipActive = false; hizliActive = false;
+                clickerBtn.innerText = "🥫"; clickerBtn.classList.remove('vip-style');
+                for (let id in items) {
+                    items[id].count = 0;
+                    items[id].cost = items[id].baseCost;
+                }
+                calculateCps();
+                updateDisplay();
+                alert("⭐ SOKAKTA İTİBARIN ARTTI! Yeni çarpanın aktif.");
+            }
         }
 
         function buyItem(id) {
             let item = items[id];
             if (score >= item.cost) {
-                score -= item.cost;
-                item.count++;
+                score -= item.cost; item.count++;
                 item.cost = Math.floor(item.baseCost * Math.pow(1.15, item.count));
-                calculateCps();
-                updateDisplay();
+                calculateCps(); updateDisplay();
             }
         }
 
         function calculateCps() {
             let baseCps = 0;
-            for (let id in items) {
-                baseCps += items[id].count * items[id].cps;
-            }
+            for (let id in items) { baseCps += items[id].count * items[id].cps; }
             
-            // Hesaplama mantığı değiştirildi:
-            if (vipActive) {
-                cps = baseCps + 1000000;
-            } else if (policeActive) {
-                cps = Math.floor(baseCps * 0.5); // Polis varken kazanç yarıya düşer
-            } else {
-                cps = baseCps;
-            }
+            baseCps *= mahalleMultiplier; // Mahalle kodu çarpanı
+            baseCps *= (1 + (prestigeStars * 0.5)); // İtibar yıldız bonusu
+
+            if (vipActive) cps = baseCps + 1000000;
+            else if (policeActive) cps = Math.floor(baseCps * 0.5);
+            else cps = baseCps;
+
+            cps *= goldenMultiplier; // Altın sprey çarpanı
         }
 
         function updateDisplay() {
             scoreDisplay.innerText = Math.floor(score).toLocaleString() + " Sokak Puanı";
-            cpsDisplay.innerText = "Saniyede: " + cps.toLocaleString();
+            cpsDisplay.innerText = "Saniyede: " + Math.floor(cps).toLocaleString();
+            prestigeDisplay.innerText = `⭐ Sokak İtibarı: ${prestigeStars} (Bonus: +${prestigeStars * 50}%)`;
+
+            if (score >= 10000000) prestigeBtn.style.display = "block";
+            else prestigeBtn.style.display = "none";
             
             for (let id in items) {
                 let item = items[id];
-                document.getElementById(`cost${id}`).innerText = item.cost.toLocaleString() + " Puan";
+                document.getElementById(`cost${id}`).innerText = item.cost.toLocaleString();
                 document.getElementById(`count${id}`).innerText = item.count;
                 let el = document.getElementById(`item${id}`);
-                if (score >= item.cost) el.classList.remove('disabled');
-                else el.classList.add('disabled');
+                if (score >= item.cost) el.classList.remove('disabled'); else el.classList.add('disabled');
             }
         }
 
-        function createFloatingText(x, y, text, customColor = null) {
-            const el = document.createElement('div');
-            el.className = 'floating-text';
-            el.innerText = text;
-            if(customColor) el.style.color = customColor;
-            el.style.left = `${x - 20}px`;
-            el.style.top = `${y - 20}px`;
-            document.body.appendChild(el);
+        function createFloatingText(x, y, text, color = "#00ffcc") {
+            const el = document.createElement('div'); el.className = 'floating-text'; el.innerText = text; el.style.color = color;
+            el.style.left = `${x}px`; el.style.top = `${y}px`; document.body.appendChild(el);
             setTimeout(() => el.remove(), 800);
         }
 
-        // Rastgele Grafiti Lekesi Oluşturma
-        function createGraffitiSplat() {
-            const colors = ['#ff007f', '#00ffcc', '#ffcc00', '#ff3300', '#9900ff'];
-            const splat = document.createElement('div');
-            splat.className = 'graffiti-splat';
-            splat.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-            splat.style.left = Math.random() * (window.innerWidth - 100) + 'px';
-            splat.style.top = Math.random() * (window.innerHeight - 100) + 'px';
-            gameContainer.appendChild(splat);
-        }
-
-        // Oyun Döngüsü
+        // ALTIN SPREY KUTUSU DOĞURMA SİSTEMİ
         setInterval(() => {
-            if (cps > 0) {
-                score += cps / 10;
-                updateDisplay();
+            if (Math.random() < 0.4) { // %40 şansla her 30 saniyede bir çıkabilir
+                const golden = document.createElement('div');
+                golden.className = 'golden-spray';
+                golden.innerText = "✨🥫✨";
+                golden.style.left = Math.random() * (window.innerWidth - 150) + "px";
+                golden.style.top = Math.random() * (window.innerHeight - 150) + "px";
+                
+                golden.onclick = (e) => {
+                    goldenMultiplier = 5;
+                    calculateCps(); updateDisplay();
+                    createFloatingText(e.clientX, e.clientY, "🔥 5X PUAN ÇARPANI AKTİF!", "#ffd700");
+                    golden.remove();
+                    
+                    setTimeout(() => { goldenMultiplier = 1; calculateCps(); updateDisplay(); }, 15000); // 15 saniye sürer
+                };
+                
+                gameContainer.appendChild(golden);
+                setTimeout(() => { golden.remove(); }, 8000); // Tıklanmazsa 8 saniyede kaybolur
             }
-        }, 100);
+        }, 30000);
 
+        setInterval(() => { if (cps > 0) { score += cps / 10; updateDisplay(); } }, 100);
         updateDisplay();
     </script>
 </body>
