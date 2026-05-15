@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Street Clicker v6 😎 - Hack Mode & Definitive Fix</title>
+    <title>Street Clicker v7 😎 - Anti-Cheat & Video Update</title>
     <style>
         * {
             box-sizing: border-box;
@@ -34,7 +34,6 @@
                         url('https://images.unsplash.com/photo-1519501025264-65ba15a82390?q=80&w=1200');
         }
 
-        /* MATRIX MODU */
         .matrix-mode {
             filter: hue-rotate(120deg) brightness(1.1);
         }
@@ -67,13 +66,6 @@
         .hack-mode .shop-title { color: #00ff00 !important; }
         .hack-mode .shop-item { border-color: #005500 !important; }
         .hack-mode .shop-item:hover { border-color: #00ff00 !important; }
-
-        .shake-screen { animation: screenShake 0.1s infinite; }
-        @keyframes screenShake {
-            0% { transform: translate(1px, 1px); }
-            50% { transform: translate(-1px, -1px); }
-            100% { transform: translate(1px, -1px); }
-        }
 
         .game-container {
             flex: 1;
@@ -305,11 +297,12 @@
         const timeBadge = document.getElementById('timeBadge');
         const sideContainer = document.getElementById('sideContainer');
 
+        const SAVE_KEY = 'streetClickerSave_v6';
+
         function toggleMarket() { sideContainer.classList.toggle('open'); }
 
-        // LOAD GAME (F5 DOSYA KORUMASI)
         function loadGame() {
-            const savedData = localStorage.getItem('streetClickerSave_v6');
+            const savedData = localStorage.getItem(SAVE_KEY);
             if (savedData) {
                 const data = JSON.parse(savedData);
                 score = data.score || 0;
@@ -350,7 +343,6 @@
             }
         }
 
-        // SAVE GAME
         function saveGame() {
             const dataToSave = {
                 score: score,
@@ -363,7 +355,7 @@
                 items: items,
                 areas: areas
             };
-            localStorage.setItem('streetClickerSave_v6', JSON.stringify(dataToSave));
+            localStorage.setItem(SAVE_KEY, JSON.stringify(dataToSave));
         }
 
         clickerBtn.addEventListener('click', (e) => {
@@ -380,7 +372,7 @@
 
         setInterval(() => {
             isNight = !isNight;
-            if (!hackActive) { // Hack modunda arka plan değişmesin sabit kalsın
+            if (!hackActive) {
                 if (isNight) {
                     mainBody.classList.remove('day-theme'); mainBody.classList.add('night-theme');
                     timeBadge.innerText = "🌙 GECE (Kedi & Müzisyen x2 Üretim!)";
@@ -406,32 +398,49 @@
             }
         }
 
-        // HİLE KONTROLLERİ (TAMAMEN BUGSIZLAŞTIRILDI)
+        // HİLE VE ÖZEL KOD KONTROLLERİ
         function checkCheat() {
-            const val = document.getElementById('cheatInput').value.trim().toUpperCase();
-            
-            if (val === "VİP" || val === "VIP") {
+            let val = document.getElementById('cheatInput').value.trim().toUpperCase();
+            // Türkçe karakter uyumluluğu için düzeltme
+            if (val === "VİDYO") val = "VIDYO";
+            if (val === "VİP") val = "VIP";
+            if (val === "MATRİX") val = "MATRIX";
+
+            if (val === "VIP") {
                 vipActive = true; 
                 clickerBtn.innerText = "👑"; 
                 clickerBtn.classList.add('vip-style');
                 document.getElementById('bossAlert').style.display = "block";
                 setTimeout(() => { document.getElementById('bossAlert').style.display = "none"; }, 3000);
             }
-            else if (val === "MATRİX" || val === "MATRIX") { 
+            else if (val === "MATRIX") { 
                 mainBody.classList.toggle('matrix-mode'); 
             }
-            // SONSUZ HACK MODU ŞİFRESİ
+            // SONSUZ MODU (VIP KONTROLLÜ)
             else if (val === "SONSUZ") {
-                hackActive = true;
-                score = Infinity;
-                mainBody.className = "hack-mode";
-                clickerBtn.innerText = "💻";
-                document.getElementById('hackAlert').style.display = "block";
-                setTimeout(() => { document.getElementById('hackAlert').style.display = "none"; }, 3000);
+                if (vipActive) {
+                    alert("⚠️ VIP üyeler hack moduna geçemez! Önce sıfırlamanız gerekir.");
+                } else {
+                    hackActive = true;
+                    score = Infinity;
+                    mainBody.className = "hack-mode";
+                    clickerBtn.innerText = "💻";
+                    document.getElementById('hackAlert').style.display = "block";
+                    setTimeout(() => { document.getElementById('hackAlert').style.display = "none"; }, 3000);
+                }
             }
-            else if (val === "ZENGİN" || val === "ZENGIN") { score += 50000000; }
-            else if (val === "FAKİR" || val === "FAKIR") { score = 0; hackActive = false; mainBody.className = "night-theme"; clickerBtn.innerText = "🥫"; }
-            else if (val === "SIFIRLA") { localStorage.removeItem('streetClickerSave_v6'); location.reload(); }
+            // YOUTUBE KODU (KEKO ŞARKI)
+            else if (val === "VIDYO") {
+                window.open("https://www.youtube.com/watch?v=L9M_7SgM5v4", "_blank");
+            }
+            else if (val === "ZENGIN") { score += 50000000; }
+            else if (val === "FAKIR") { score = 0; hackActive = false; mainBody.className = "night-theme"; clickerBtn.innerText = "🥫"; }
+            // SIFIRLMA KODU KESİN ÇÖZÜM
+            else if (val === "SIFIRLA") { 
+                localStorage.removeItem(SAVE_KEY); 
+                location.reload(); 
+                return;
+            }
 
             calculateCps(); updateDisplay(); saveGame();
             document.getElementById('cheatInput').value = "";
@@ -469,14 +478,12 @@
             }
         }
 
-        // TAM KUSURSUZ SANİYELİK KAZANÇ ÇALIŞTIRMA MOTORU
         function calculateCps() {
             let baseCps = 0;
             let kediMult = isNight ? 2 : 1;
             let patenMult = !isNight ? 2 : 1;
             let muzikMult = isNight ? 2 : 1;
 
-            // Değişken isimleri düzeltildi: items[id] olarak çağırılıyor!
             baseCps += items.count * items.cps * kediMult;
             baseCps += items[2].count * items[2].cps * patenMult;
             baseCps += items[3].count * items[3].cps * muzikMult;
@@ -525,14 +532,12 @@
             setTimeout(() => el.remove(), 800);
         }
 
-        // Başlangıç Yüklemeleri
         loadGame();
         calculateCps();
         updateDisplay();
 
         setInterval(saveGame, 10000);
 
-        // Her 100ms'de bir oyun döngüsü
         setInterval(() => { 
             if (cps > 0 && !hackActive) { 
                 score += cps / 10; 
