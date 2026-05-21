@@ -12,6 +12,14 @@
         /* Üst Menü */
         header { display: flex; justify-content: space-between; align-items: center; padding: 20px 8%; position: fixed; top: 0; left: 0; width: 100%; background: #12131c; border-bottom: 1px solid #ff0055; z-index: 100; }
         .logo { color: #ff0055; font-weight: 800; font-size: 24px; text-shadow: 0 0 10px rgba(255, 0, 85, 0.5); }
+        
+        /* Sol Menü Grubu */
+        .left-menu { display: flex; align-items: center; gap: 15px; }
+        
+        /* GİZLİ ADMİN BUTONU */
+        #adminButonu { display: none; background: #ff0055; color: white; border: none; padding: 8px 15px; border-radius: 5px; font-weight: 600; cursor: pointer; font-size: 13px; box-shadow: 0 0 10px rgba(255, 0, 85, 0.4); animation: pulse 2s infinite; }
+        #adminButonu:hover { background: #cc0044; }
+
         .user-info { font-weight: 600; background: #1f2029; padding: 5px 15px; border-radius: 20px; border: 1px solid #333; }
 
         .container { max-width: 1000px; margin: 0 auto; padding: 20px; text-align: center; }
@@ -24,24 +32,38 @@
         .item-card h3 { margin-bottom: 10px; font-size: 20px; }
         .price { color: #ff0055; font-weight: 800; font-size: 22px; margin-bottom: 15px; }
         
-        button { background: #ff0055; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; width: 100%; transition: 0.2s; }
-        button:hover { background: #cc0044; }
+        .buy-btn { background: #ff0055; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; width: 100%; transition: 0.2s; }
+        .buy-btn:hover { background: #cc0044; }
 
-        /* GİZLİ ADMİN PANELİ */
-        #adminPanel { display: none; background: #12131c; border: 2px dashed #ff0055; padding: 30px; border-radius: 15px; margin-top: 50px; text-align: left; box-shadow: 0 0 20px rgba(255, 0, 85, 0.1); }
+        /* AÇILIR ADMİN PANELİ (MODAL PENCERE) */
+        .admin-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; justify-content: center; align-items: center; }
+        .admin-content { background: #12131c; border: 2px solid #ff0055; padding: 30px; border-radius: 15px; width: 90%; max-width: 500px; box-shadow: 0 0 30px rgba(255, 0, 85, 0.3); position: relative; }
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 24px; color: #aaa; cursor: pointer; transition: 0.2s; }
+        .close-btn:hover { color: #ff0055; }
+        
         .admin-title { color: #ff0055; font-weight: 800; margin-bottom: 15px; display: flex; align-items: center; justify-content: space-between; }
-        .admin-box { display: flex; gap: 15px; align-items: center; margin-top: 15px; }
-        .admin-box input { background: #0b0c10; border: 1px solid #333; padding: 12px; color: white; border-radius: 8px; width: 250px; }
+        .admin-box { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
+        .admin-box input { background: #0b0c10; border: 1px solid #333; padding: 12px; color: white; border-radius: 8px; width: 100%; font-size: 16px; }
         .admin-box input:focus { border-color: #ff0055; outline: none; }
-        .admin-box button { width: auto; padding: 12px 25px; }
+        .admin-box button { background: #ff0055; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 600; cursor: pointer; }
 
-        .your-ip { font-size: 12px; color: #666; margin-top: 40px; text-align: center; }
+        .your-ip { font-size: 12px; color: #444; margin-top: 60px; text-align: center; }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 0, 85, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 0, 85, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 0, 85, 0); }
+        }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">GHOSTCLIENT</div>
+        <div class="left-menu">
+            <div class="logo">GHOSTCLIENT</div>
+            <!-- SOLDAKİ GİZLİ BUTON (Sadece senin IP'nde açılır) -->
+            <button id="adminButonu" onclick="paneliAc()">🛠️ Kurucu Paneli</button>
+        </div>
         <div class="user-info" id="bakiyeGosterge">Bakiye: 100 GC</div>
     </header>
 
@@ -54,31 +76,34 @@
             <div class="item-card">
                 <h3>Vip Ghost Cape</h3>
                 <div class="price">50 GC</div>
-                <button onclick="satinal(50, 'Vip Ghost Cape')">Satın Al</button>
+                <button class="buy-btn" onclick="satinal(50, 'Vip Ghost Cape')">Satın Al</button>
             </div>
             <div class="item-card">
                 <h3>Fly Hack (1 Günlük)</h3>
                 <div class="price">150 GC</div>
-                <button onclick="satinal(150, 'Fly Hack (1 Günlük)')">Satın Al</button>
+                <button class="buy-btn" onclick="satinal(150, 'Fly Hack (1 Günlük)')">Satın Al</button>
             </div>
             <div class="item-card">
                 <h3>Premium Üyelik</h3>
                 <div class="price">500 GC</div>
-                <button onclick="satinal(500, 'Premium Üyelik')">Satın Al</button>
+                <button class="buy-btn" onclick="satinal(500, 'Premium Üyelik')">Satın Al</button>
             </div>
         </div>
 
-        <!-- SADECE SANA GÖRÜNECEK GİZLİ PANEL -->
-        <div id="adminPanel">
-            <div class="admin-title">
-                <h3>🛠️ KURUCU YÖNETİM PANELİ (GİZLİ)</h3>
-                <span style="background: #ff0055; padding: 2px 8px; border-radius: 5px; font-size: 11px;">IP DOĞRULANDI</span>
-            </div>
-            <p style="color: #aaa; font-size: 14px;">Sistem IP adresini başarıyla tanıdı kral. Buradan kendine istediğin kadar Ghost Coin basabilirsin.</p>
-            
-            <div class="admin-box">
-                <input type="number" id="paraMiktari" placeholder="Eklenecek GC Miktarı (Örn: 500)">
-                <button onclick="adminParaEkle()">Hesaba Enjekte Et</button>
+        <!-- EKRANIN ORTASINDA AÇILACAK GİZLİ KURUCU PENCERESİ -->
+        <div id="adminModal" class="admin-modal">
+            <div class="admin-content">
+                <span class="close-btn" onclick="paneliKapat()">&times;</span>
+                <div class="admin-title">
+                    <h3>🛠| KURUCU YÖNETİM PANELİ</h3>
+                    <span style="background: #ff0055; padding: 2px 8px; border-radius: 5px; font-size: 11px;">IP ONAYLANDI</span>
+                </div>
+                <p style="color: #aaa; font-size: 14px; text-align: left;">Sistem IP adresini başarıyla eşleştirdi. Kendine eklemek istediğin Ghost Coin miktarını yaz kral:</p>
+                
+                <div class="admin-box">
+                    <input type="number" id="paraMiktari" placeholder="Enjekte Edilecek GC (Örn: 5000)">
+                    <button onclick="adminParaEkle()">Bakiyeyi Güncelle</button>
+                </div>
             </div>
         </div>
 
@@ -87,31 +112,39 @@
 
     <script>
         // ==========================================
-        // 🛠️ SENİN IP ADRESİN BURAYA GÜVENLE EKLENDİ
+        // 🛠️ SENİN IP ADRESİN GÜVENLİ ŞEKİLDE BAĞLANDI
         // ==========================================
         const ADMIN_IP = "188.3.187.179"; 
         
         let bakiye = parseInt(localStorage.getItem('ghost_balance')) || 100;
         document.getElementById('bakiyeGosterge').innerText = `Bakiye: ${bakiye} GC`;
 
-        // İnternet dış IP adresini kontrol eden güvenli fonksiyon
+        // İnternet IP adresini çeken ve kontrol eden fonksiyon
         fetch('https://api.ipify.org?format=json')
             .then(response => response.json())
             .then(data => {
                 const userIP = data.ip;
                 document.getElementById('ipGosterge').innerText = `Mevcut IP: ${userIP}`;
                 
-                // Eğer giren kişinin IP'si senin IP'n ile birebir eşleşirse gizli paneli aktif et
+                // IP kontrolü başarılıysa sol üstteki butonu aktifleştir
                 if (userIP === ADMIN_IP) {
-                    document.getElementById('adminPanel').style.display = 'block';
+                    document.getElementById('adminButonu').style.display = 'block';
                 }
             })
             .catch(error => {
                 console.error("IP Adresi doğrulanamadı:", error);
-                document.getElementById('ipGosterge').innerText = "IP servisine bağlanılamadı. İnternet bağlantını kontrol et kral.";
+                document.getElementById('ipGosterge').innerText = "IP servisine bağlanılamadı.";
             });
 
-        // Marketten Alışveriş Sistemi
+        // Pencere Kontrolleri
+        function paneliAc() {
+            document.getElementById('adminModal').style.display = 'flex';
+        }
+        function paneliKapat() {
+            document.getElementById('adminModal').style.display = 'none';
+        }
+
+        // Market Alışveriş Sistemi
         function satinal(fiyat, urunAdi) {
             if (bakiye >= fiyat) {
                 bakiye -= fiyat;
@@ -119,26 +152,45 @@
                 document.getElementById('bakiyeGosterge').innerText = `Bakiye: ${bakiye} GC`;
                 alert(`🚀 ${urunAdi} başarıyla satın alındı! Güle güle kullan.`);
             } else {
-                alert("❌ Yetersiz Ghost Coin! Kurucu panelinden bakiye takviyesi yap.");
+                alert("❌ Yetersiz Ghost Coin! Sol üstteki kurucu panelini açıp kendine bakiye bas kral.");
             }
         }
 
-        // Sadece senin tetikleyebileceğin para basma fonksiyonu
+        // Admin Bakiye Basma Fonksiyonu
         function adminParaEkle() {
             const miktarInput = document.getElementById('paraMiktari');
             const miktar = parseInt(miktarInput.value);
 
             if (!miktar || miktar <= 0) {
-                alert("Lütfen geçerli bir bakiye miktarı gir kral!");
+                alert("Lütfen geçerli bir miktar gir!");
                 return;
             }
 
             bakiye += miktar;
             localStorage.setItem('ghost_balance', bakiye);
             document.getElementById('bakiyeGosterge').innerText = `Bakiye: ${bakiye} GC`;
-            miktarInput.value = ""; // Kutunun içini sıfırla
+            miktarInput.value = ""; 
+            paneliKapat(); 
             alert(`😎 Başarıyla hesabına ${miktar} GC enjekte edildi!`);
         }
     </script>
+
+    <!-- ==========================================
+        💬 SENİN ORİJİNAL TAWK.TO KODUN TAM ENTEGRE EDİLDİ
+    ========================================== -->
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/6a0f71202370201c349f2fa4/1jp653qfn';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!--End of Tawk.to Script-->
+
 </body>
 </html>
