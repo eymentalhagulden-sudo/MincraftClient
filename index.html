@@ -2,143 +2,205 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Minecraft Ghost Client | Resmi İndirme Sitesi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lunar Style Client</title>
+    <!-- Google Fonts üzerinden şık bir yazı tipi -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        /* Genel Reset ve Renk Tanımlamaları */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #11141a; /* Lunar tarzı koyu arka plan */
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Navigasyon Barı (Üst Menü) */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            background-color: rgba(17, 20, 26, 0.8);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            background: linear-index(45deg, #00f2fe, #4facfe);
+            color: #00f2fe;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 30px;
+        }
+
+        nav ul li a {
+            color: #a0a5b5;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #ffffff;
+        }
+
+        /* Ana Bölüm (Hero Section) */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            background: radial-gradient(circle at center, rgba(0, 242, 254, 0.1) 0%, transparent 60%);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero h1 span {
+            color: #00f2fe; /* Neon Detay */
+            text-shadow: 0 0 20px rgba(0, 242, 254, 0.5);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #a0a5b5;
+            max-width: 600px;
+            margin-bottom: 40px;
+        }
+
+        /* İndirme Butonu */
+        .download-btn {
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            color: #11141a;
+            padding: 16px 40px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(0, 242, 254, 0.3);
+            transition: 0.3s ease;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0, 242, 254, 0.5);
+        }
+
+        /* Başarılı Bildirim Kutusu (Toast Notification) */
+        .notification {
+            position: fixed;
+            bottom: -100px;
+            right: 30px;
+            background-color: #1a1f29;
+            border-left: 4px solid #00f2fe;
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            transition: 0.5s ease-in-out;
+            z-index: 2000;
+        }
+
+        .notification.show {
+            bottom: 30px;
+        }
+
+        .notification .title {
+            font-weight: 600;
+            color: #00f2fe;
+        }
+
+        .notification .code {
+            font-family: monospace;
+            background: #11141a;
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+    </style>
 </head>
-<body bgcolor="#1e1e24" text="#ffffff" link="#00ffaa" vlink="#00ffaa">
+<body>
 
-    <!-- SİTE BAŞLIĞI -->
-    <br>
-    <center>
-        <h1><font color="#00ffaa" face="Arial" size="6">GHOST CLIENT v1.0</font></h1>
-        <p><font color="#cccccc" face="Arial">Minecraft İçin Gelişmiş Performans ve FPS İstemcisi</font></p>
-        <hr width="90%" color="#333340">
-    </center>
-    <br>
+    <!-- Üst Menü -->
+    <header>
+        <div class="logo">LUNAR<span>.</span></div>
+        <nav>
+            <ul>
+                <li><a href="#">Ana Sayfa</a></li>
+                <li><a href="#">Özellikler</a></li>
+                <li><a href="#">Mağaza</a></li>
+                <li><a href="#">Destek</a></li>
+            </ul>
+        </nav>
+    </header>
 
-    <!-- ANA TABLO (SİTEYİ İKİYE BÖLÜYORUZ: SOL ANA İÇERİK, SAĞ ASİSTAN) -->
-    <table width="90%" align="center" border="0" cellpadding="10" cellspacing="10">
-        <tr>
-            
-            <!-- ====== SOL TARAF: İNDİRME VE GALERİ ====== -->
-            <td width="65%" valign="top">
+    <!-- Ana Karşılama Ekranı -->
+    <section class="hero">
+        <h1>Oyun Deneyimini<br><span>Zirveye Taşı</span></h1>
+        <p>Gelişmiş FPS artışı, özelleştirilebilir modlar ve modern arayüz ile rakiplerinin her zaman bir adım önünde ol.</p>
+        
+        <!-- İndirme Butonu -->
+        <button class="download-btn" id="downloadBtn">HEMEN İNDİR</button>
+    </section>
+
+    <!-- Bildirim Penceresi -->
+    <div class="notification" id="notiBox">
+        <div class="title">✓ Kurulum Komutu Kopyalandı!</div>
+        <div>Terminaline yapıştırıp çalıştırabilirsin:</div>
+        <div class="code" id="codeText">npm install lunar-client-pack</div>
+    </div>
+
+    <!-- JavaScript Kodları -->
+    <script>
+        const downloadBtn = document.getElementById('downloadBtn');
+        const notiBox = document.getElementById('notiBox');
+        const codeText = document.getElementById('codeText').innerText;
+
+        downloadBtn.addEventListener('click', () => {
+            // Belirtilen npm komutunu arka planda panoya kopyalar
+            navigator.clipboard.writeText(codeText).then(() => {
+                // Bildirim kutusunu aşağıdan yukarı fırlatır
+                notiBox.classList.add('show');
                 
-                <!-- İNDİRME ALANI -->
-                <table width="100%" bgcolor="#2d2d38" border="1" bordercolor="#00ffaa" cellpadding="15" style="border-radius: 8px;">
-                    <tr>
-                        <td>
-                            <center>
-                                <h2><font color="#00ffaa">GhostClient_Installer.exe</font></h2>
-                                <p>Minecraft dünyasında donmaları engellemek ve yüksek FPS almak için hemen istemciyi indirin.</p>
-                                <br>
-                                
-                                <!-- GERÇEK NOT DOSYASI İNDİREN BUTON LİNKİ -->
-                                <a href="data:text/plain;charset=utf-8,GEÇMİŞ%20OLSUN%20KRAL!%20%0A%0AGhost%20Client%20diye%20bir%20şey%20yok,%20fena%20trollediniz.%20%3A%29%0A%0A-eymentalhagulden-sudo%20tarafından%20hazırlanmıştır." 
-                                   download="GhostClient_Kurulum_Notu.txt">
-                                    <button style="background-color: #00ffaa; color: #000000; font-size: 16px; font-weight: bold; padding: 12px 35px; border: none; cursor: pointer;">
-                                        DOWNLOAD CLIENT (.EXE)
-                                    </button>
-                                </a>
-                                
-                                <br><br>
-                                <small><font color="#ff5555">*Dosya tamamen güvenlidir, uyarıları dikkate almayınız.*</font></small>
-                            </center>
-                        </td>
-                    </tr>
-                </table>
-
-                <br><br>
-
-                <!-- MINECRAFT GALERİ BÖLÜMÜ -->
-                <h3><font color="#00ffaa" face="Arial">📸 Oyundan Ekran Görüntüleri (Galeri)</font></h3>
-                <table width="100%" border="0" cellspacing="10" cellpadding="0">
-                    <tr>
-                        <td bgcolor="#2d2d38" align="center" width="50%" height="130">
-                            <br>
-                            <font color="#00ffaa"><b>[ HUD Arayüzü ]</b></font><br>
-                            <small><font color="#aaaaaa">Gelişmiş FPS ve CPS göstergeleri</font></small>
-                        </td>
-                        <td bgcolor="#2d2d38" align="center" width="50%" height="130">
-                            <br>
-                            <font color="#00ffaa"><b>[ Özel Pelerinler ]</b></font><br>
-                            <small><font color="#aaaaaa">Tamamen ücretsiz kullanılabilir kozmetikler</font></small>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td bgcolor="#2d2d38" align="center" height="130">
-                            <br>
-                            <font color="#00ffaa"><b>[ Hitbox Ayarı ]</b></font><br>
-                            <small><font color="#aaaaaa">PvP için optimize edilmiş vuruş alanı</font></small>
-                        </td>
-                        <td bgcolor="#2d2d38" align="center" height="130">
-                            <br>
-                            <font color="#00ffaa"><b>[ Optifine Modu ]</b></font><br>
-                            <small><font color="#aaaaaa">Kasmayı önleyen özel grafik motoru</font></small>
-                        </td>
-                    </tr>
-                </table>
-
-            </td>
-
-            <!-- ====== SAĞ TARAF: YARDIM VE CHATGPT ====== -->
-            <td width="35%" valign="top">
-                
-                <!-- RENKLİ YARDIM MENÜSÜ (TURUNCU) -->
-                <table width="100%" bgcolor="#ff9900" cellspacing="0" cellpadding="8">
-                    <tr>
-                        <td><b><font color="#000000" face="Arial">⚠️ SIKÇA SORULAN SORULAR</font></b></td>
-                    </tr>
-                </table>
-                <table width="100%" bgcolor="#2d2d38" border="1" bordercolor="#ff9900" cellpadding="10">
-                    <tr>
-                        <td>
-                            <font size="2" face="Arial">
-                                <b>S: Kurulum nasıl yapılır?</b><br>
-                                <font color="#ff9900">C:</font> Yukarıdaki yeşil butondan not dosyasını indirip adımları okuyun.<br><br>
-                                
-                                <b>S: Sunuculardan yasaklanır mıyım?</b><br>
-                                <font color="#ff9900">C:</font> Hayır, özel bypass sistemi sayesinde tamamen güvenlidir.<br><br>
-                                
-                                <b>S: Ücretsiz mi?</b><br>
-                                <font color="#ff9900">C:</font> Evet, Ghost Client tamamen ücretsiz bir projedir.
-                            </font>
-                        </td>
-                    </tr>
-                </table>
-
-                <br><br>
-
-                <!-- CHATGPT ASİSTANI (YEŞİL) -->
-                <table width="100%" bgcolor="#10a37f" cellspacing="0" cellpadding="8">
-                    <tr>
-                        <td><b><font color="#ffffff" face="Arial">🤖 ChatGPT Canlı Destek</font></b></td>
-                    </tr>
-                </table>
-                <table width="100%" bgcolor="#202123" border="1" bordercolor="#10a37f" cellpadding="10">
-                    <tr>
-                        <td>
-                            <font size="2" face="Arial">
-                                <font color="#10a37f"><b>ChatGPT:</b></font> Merhaba! Ghost Client kurulum asistanıyım. Bir sorun mu var?<br><br>
-                                <font color="#00ffaa"><b>Siz:</b></font> İndirme butonu ne işe yarıyor?<br><br>
-                                <font color="#10a37f"><b>ChatGPT:</b></font> Yukarıdaki yeşil butona tıklayarak kurulum dosyasını ve gerekli bilgileri anında bilgisayarınıza indirebilirsiniz.
-                            </font>
-                            <hr color="#333">
-                            <input type="text" placeholder="Mesajınızı yazın..." style="width: 70%; background-color: #343541; color: white; border: 1px solid #555; padding: 5px;">
-                            <button onclick="alert('Destek hattı şu an yoğun, lütfen daha sonra tekrar deneyin!')" style="background-color: #10a37f; color: white; border: none; padding: 5px 10px; cursor: pointer;">Gönder</button>
-                        </td>
-                    </tr>
-                </table>
-
-            </td>
-
-        </tr>
-    </table>
-
-    <br><br>
-    <hr width="90%" color="#333340">
-    <center>
-        <font size="2" color="#666677" face="Arial">© 2026 eymentalhagulden-sudo.github.io - Tüm Hakları Trolledi.</font>
-    </center>
-    <br>
-
+                // 4 saniye sonra bildirimi geri saklar
+                setTimeout(() => {
+                    notiBox.classList.remove('show');
+                }, 4000);
+            }).catch(err => {
+                console.error('Kopyalama başarısız oldu: ', err);
+            });
+        });
+    </script>
 </body>
 </html>
