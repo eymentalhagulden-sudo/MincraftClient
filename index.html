@@ -3,329 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GHOSTCLIENT - Premium Gaming Experience</title>
-    <!-- Google Fonts -->
+    <title>GHOSTCLIENT - Market & Yönetim</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        /* Genel Tasarım Ayarları */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: #0b0c10; color: #fff; padding-top: 100px; padding-bottom: 50px; }
+        
+        /* Üst Menü */
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 8%; position: fixed; top: 0; left: 0; width: 100%; background: #12131c; border-bottom: 1px solid #ff0055; z-index: 100; }
+        .logo { color: #ff0055; font-weight: 800; font-size: 24px; text-shadow: 0 0 10px rgba(255, 0, 85, 0.5); }
+        .user-info { font-weight: 600; background: #1f2029; padding: 5px 15px; border-radius: 20px; border: 1px solid #333; }
 
-        body {
-            background-color: #0b0c10; 
-            color: #ffffff;
-            overflow-x: hidden;
-        }
+        .container { max-width: 1000px; margin: 0 auto; padding: 20px; text-align: center; }
+        h2 { margin-bottom: 20px; font-weight: 800; }
 
-        /* Üst Menü / Navbar */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 8%;
-            background-color: rgba(11, 12, 16, 0.85);
-            backdrop-filter: blur(10px);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255, 0, 85, 0.1);
-        }
+        /* Market Kartları */
+        .market-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 30px; }
+        .item-card { background: #1f2029; border: 1px solid #2a2b36; padding: 25px; border-radius: 15px; transition: 0.3s; position: relative; overflow: hidden; }
+        .item-card:hover { border-color: #ff0055; transform: translateY(-5px); box-shadow: 0 5px 15px rgba(255, 0, 85, 0.2); }
+        .item-card h3 { margin-bottom: 10px; font-size: 20px; }
+        .price { color: #ff0055; font-weight: 800; font-size: 22px; margin-bottom: 15px; }
+        
+        button { background: #ff0055; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; width: 100%; transition: 0.2s; }
+        button:hover { background: #cc0044; }
 
-        .logo {
-            font-size: 24px;
-            font-weight: 800;
-            letter-spacing: 2px;
-            color: #ff0055; 
-            text-shadow: 0 0 10px rgba(255, 0, 85, 0.3);
-        }
+        /* GİZLİ ADMİN PANELİ */
+        #adminPanel { display: none; background: #12131c; border: 2px dashed #ff0055; padding: 30px; border-radius: 15px; margin-top: 50px; text-align: left; box-shadow: 0 0 20px rgba(255, 0, 85, 0.1); }
+        .admin-title { color: #ff0055; font-weight: 800; margin-bottom: 15px; display: flex; align-items: center; justify-content: space-between; }
+        .admin-box { display: flex; gap: 15px; align-items: center; margin-top: 15px; }
+        .admin-box input { background: #0b0c10; border: 1px solid #333; padding: 12px; color: white; border-radius: 8px; width: 250px; }
+        .admin-box input:focus { border-color: #ff0055; outline: none; }
+        .admin-box button { width: auto; padding: 12px 25px; }
 
-        .user-panel {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .balance-display {
-            background: #1f2833;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            border: 1px solid rgba(255, 0, 85, 0.3);
-            color: #ff0055;
-            text-shadow: 0 0 5px rgba(255, 0, 85, 0.2);
-        }
-
-        /* Ana Karşılama Ekranı (Hero) */
-        .hero {
-            height: 85vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 0 20px;
-            background: radial-gradient(circle at center, rgba(255, 0, 85, 0.08) 0%, transparent 60%);
-            margin-top: 60px;
-        }
-
-        .hero h1 {
-            font-size: 4rem;
-            font-weight: 800;
-            margin-bottom: 20px;
-        }
-
-        .hero h1 span {
-            color: #ff0055;
-            text-shadow: 0 0 30px rgba(255, 0, 85, 0.6);
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            color: #c5a8b3;
-            max-width: 600px;
-            margin-bottom: 40px;
-        }
-
-        .download-btn {
-            background: linear-gradient(135deg, #ff0055 0%, #990033 100%);
-            color: white;
-            padding: 18px 45px;
-            font-size: 1.2rem;
-            font-weight: 800;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 10px 25px rgba(255, 0, 85, 0.3);
-            transition: 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .download-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(255, 0, 85, 0.6);
-        }
-
-        /* Market Bölümü */
-        .market-section {
-            padding: 60px 8%;
-            background: #12131c;
-        }
-
-        .market-title {
-            text-align: center;
-            font-size: 2.2rem;
-            margin-bottom: 40px;
-            font-weight: 800;
-        }
-
-        .market-title span {
-            color: #ff0055;
-        }
-
-        .market-grid {
-            text-align: center;
-        }
-
-        .product-card {
-            display: inline-block;
-            background: #1f2029;
-            width: 280px;
-            margin: 15px;
-            padding: 25px;
-            border-radius: 15px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: 0.3s;
-            vertical-align: top;
-        }
-
-        .product-card:hover {
-            border-color: #ff0055;
-            transform: translateY(-5px);
-        }
-
-        .product-icon {
-            font-size: 40px;
-            margin-bottom: 15px;
-        }
-
-        .product-name {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-
-        .product-price {
-            color: #ff0055;
-            font-size: 1.4rem;
-            font-weight: 800;
-            margin-bottom: 20px;
-        }
-
-        .buy-btn {
-            background: transparent;
-            color: white;
-            border: 2px solid #ff0055;
-            padding: 10px 25px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: 0.3s;
-            width: 100%;
-        }
-
-        .buy-btn:hover {
-            background: #ff0055;
-            box-shadow: 0 0 15px rgba(255, 0, 85, 0.4);
-        }
-
-        /* Bildirim Kutusu */
-        .toast {
-            position: fixed;
-            bottom: -100px;
-            right: 30px;
-            background-color: #1f2029;
-            border-left: 4px solid #ff0055;
-            color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            transition: 0.5s ease-in-out;
-            z-index: 3000;
-        }
-
-        .toast.show {
-            bottom: 30px;
-        }
+        .your-ip { font-size: 12px; color: #666; margin-top: 40px; text-align: center; }
     </style>
 </head>
 <body>
 
-    <!-- Üst Menü ve Bakiye Paneli -->
     <header>
         <div class="logo">GHOSTCLIENT</div>
-        <div class="user-panel">
-            <div class="balance-display">Bakiye: <span id="balanceText">0</span> GC</div>
-        </div>
+        <div class="user-info" id="bakiyeGosterge">Bakiye: 100 GC</div>
     </header>
 
-    <!-- Ana Karşılama Ekranı -->
-    <section class="hero">
-        <h1>Rakiplerine Görünmez Ol:<br><span>GHOSTCLIENT</span></h1>
-        <p>En yüksek FPS optimizasyonu, özel oyun içi pelerinler ve gelişmiş kozmetik modları tek bir çatı altında.</p>
-        <a href="data:text/plain;charset=utf-8," download="ghostclient_kurulum.txt" class="download-btn" id="downloadBtn">İNDİR (ÜCRETSİZ)</a>
-    </section>
+    <div class="container">
+        <h2>👻 GHOST COIN MAĞAZASI 👻</h2>
+        <p style="color: #888;">GhostClient ayrıcalıklarını hesabına tanımla.</p>
 
-    <!-- Market Sistemi Bölümü -->
-    <section class="market-section">
-        <h2 class="market-title">GC Mağazası <span>(Ghost Coin)</span></h2>
-        
+        <!-- Market Ürünleri -->
         <div class="market-grid">
-            <div class="product-card">
-                <div class="product-icon">🧣</div>
-                <div class="product-name">Ghost Pelerini</div>
-                <div class="product-price">10 GC</div>
-                <button class="buy-btn" onclick="buyProduct('Ghost Pelerini', 10)">Satın Al</button>
+            <div class="item-card">
+                <h3>Vip Ghost Cape</h3>
+                <div class="price">50 GC</div>
+                <button onclick="satinal(50, 'Vip Ghost Cape')">Satın Al</button>
             </div>
-
-            <div class="product-card">
-                <div class="product-icon">👑</div>
-                <div class="product-name">Premium Kanatlar</div>
-                <div class="product-price">30 GC</div>
-                <button class="buy-btn" onclick="buyProduct('Premium Kanatlar', 30)">Satın Al</button>
+            <div class="item-card">
+                <h3>Fly Hack (1 Günlük)</h3>
+                <div class="price">150 GC</div>
+                <button onclick="satinal(150, 'Fly Hack (1 Günlük)')">Satın Al</button>
             </div>
-
-            <div class="product-card">
-                <div class="product-icon">⚔️</div>
-                <div class="product-name">Özel Kılıç Efekti</div>
-                <div class="product-price">20 GC</div>
-                <button class="buy-btn" onclick="buyProduct('Özel Kılıç Efekti', 20)">Satın Al</button>
+            <div class="item-card">
+                <h3>Premium Üyelik</h3>
+                <div class="price">500 GC</div>
+                <button onclick="satinal(500, 'Premium Üyelik')">Satın Al</button>
             </div>
         </div>
-    </section>
 
-    <!-- Dinamik Bildirim Kutusu -->
-    <div class="toast" id="toastBox">İşlem Başarılı!</div>
+        <!-- SADECE SANA GÖRÜNECEK GİZLİ PANEL -->
+        <div id="adminPanel">
+            <div class="admin-title">
+                <h3>🛠️ KURUCU YÖNETİM PANELİ (GİZLİ)</h3>
+                <span style="background: #ff0055; padding: 2px 8px; border-radius: 5px; font-size: 11px;">IP DOĞRULANDI</span>
+            </div>
+            <p style="color: #aaa; font-size: 14px;">Sistem IP adresini başarıyla tanıdı kral. Buradan kendine istediğin kadar Ghost Coin basabilirsin.</p>
+            
+            <div class="admin-box">
+                <input type="number" id="paraMiktari" placeholder="Eklenecek GC Miktarı (Örn: 500)">
+                <button onclick="adminParaEkle()">Hesaba Enjekte Et</button>
+            </div>
+        </div>
 
-    <!-- Sitenin Kendi JavaScript Dinamikleri -->
+        <div class="your-ip" id="ipGosterge">IP Adresiniz Kontrol Ediliyor...</div>
+    </div>
+
     <script>
-        let balance = 0;
-        const balanceText = document.getElementById('balanceText');
-        const downloadBtn = document.getElementById('downloadBtn');
-        const toastBox = document.getElementById('toastBox');
+        // ==========================================
+        // 🛠️ SENİN IP ADRESİN BURAYA GÜVENLE EKLENDİ
+        // ==========================================
+        const ADMIN_IP = "188.3.187.179"; 
+        
+        let bakiye = parseInt(localStorage.getItem('ghost_balance')) || 100;
+        document.getElementById('bakiyeGosterge').innerText = `Bakiye: ${bakiye} GC`;
 
-        // Sayfa Yüklendiğinde Günlük Ödül Kontrolü
-        window.addEventListener('load', () => {
-            const bugununTarihi = new Date().toDateString();
-            const odulAlindiMi = localStorage.getItem('ghost_odul_tarihi');
-
-            if (odulAlindiMi === bugununTarihi) {
-                balance = parseInt(localStorage.getItem('ghost_bakiye')) || 0;
-                balanceText.innerText = balance;
-                setTimeout(() => {
-                    showToast('👋 Tekrar hoş geldin! Bugünkü ödülünü zaten almıştın.');
-                }, 1000);
-            } else {
-                balance = parseInt(localStorage.getItem('ghost_bakiye')) || 0;
-                balance += 10;
-                balanceText.innerText = balance;
+        // İnternet dış IP adresini kontrol eden güvenli fonksiyon
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                const userIP = data.ip;
+                document.getElementById('ipGosterge').innerText = `Mevcut IP: ${userIP}`;
                 
-                localStorage.setItem('ghost_bakiye', balance);
-                localStorage.setItem('ghost_odul_tarihi', bugununTarihi);
+                // Eğer giren kişinin IP'si senin IP'n ile birebir eşleşirse gizli paneli aktif et
+                if (userIP === ADMIN_IP) {
+                    document.getElementById('adminPanel').style.display = 'block';
+                }
+            })
+            .catch(error => {
+                console.error("IP Adresi doğrulanamadı:", error);
+                document.getElementById('ipGosterge').innerText = "IP servisine bağlanılamadı. İnternet bağlantını kontrol et kral.";
+            });
 
-                setTimeout(() => {
-                    showToast('🎉 Günlük Giriş Ödülü: +10 Ghost Coin (GC) Hesabına Eklendi!');
-                }, 1000);
-            }
-        });
-
-        // Bildirim gösterme fonksiyonu
-        function showToast(message) {
-            toastBox.innerText = message;
-            toastBox.classList.add('show');
-            setTimeout(() => {
-                toastBox.classList.remove('show');
-            }, 3500);
-        }
-
-        // Market Satın Alım Kontrolü
-        function buyProduct(productName, price) {
-            if (balance >= price) {
-                balance -= price;
-                balanceText.innerText = balance;
-                localStorage.setItem('ghost_bakiye', balance); 
-                showToast(`🎉 ${productName} başarıyla alındı! Kozmetik envanterine eklendi.`);
+        // Marketten Alışveriş Sistemi
+        function satinal(fiyat, urunAdi) {
+            if (bakiye >= fiyat) {
+                bakiye -= fiyat;
+                localStorage.setItem('ghost_balance', bakiye);
+                document.getElementById('bakiyeGosterge').innerText = `Bakiye: ${bakiye} GC`;
+                alert(`🚀 ${urunAdi} başarıyla satın alındı! Güle güle kullan.`);
             } else {
-                showToast(`❌ Yetersiz bakiye! Bu ürünü almak için ${price - balance} GC daha biriktirmelisin.`);
+                alert("❌ Yetersiz Ghost Coin! Kurucu panelinden bakiye takviyesi yap.");
             }
         }
 
-        // İndirme Bildirimi
-        downloadBtn.addEventListener('click', () => {
-            showToast('📥 GHOSTCLIENT kurulum dosyası indiriliyor...');
-        });
-    </script>
+        // Sadece senin tetikleyebileceğin para basma fonksiyonu
+        function adminParaEkle() {
+            const miktarInput = document.getElementById('paraMiktari');
+            const miktar = parseInt(miktarInput.value);
 
-    <!-- Canlı Destek Tawk.to Sistemi Başlangıcı -->
-    <script type="text/javascript">
-    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-    (function(){
-    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-    s1.async=true;
-    s1.src='https://embed.tawk.to/6a0f71202370201c349f2fa4/1jp653qfn';
-    s1.charset='UTF-8';
-    s1.setAttribute('crossorigin','*');
-    s0.parentNode.insertBefore(s1,s0);
-    })();
-    </script>
-    <!-- Canlı Destek Tawk.to Sistemi Bitişi -->
+            if (!miktar || miktar <= 0) {
+                alert("Lütfen geçerli bir bakiye miktarı gir kral!");
+                return;
+            }
 
+            bakiye += miktar;
+            localStorage.setItem('ghost_balance', bakiye);
+            document.getElementById('bakiyeGosterge').innerText = `Bakiye: ${bakiye} GC`;
+            miktarInput.value = ""; // Kutunun içini sıfırla
+            alert(`😎 Başarıyla hesabına ${miktar} GC enjekte edildi!`);
+        }
+    </script>
 </body>
 </html>
