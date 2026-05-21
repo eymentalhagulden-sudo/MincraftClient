@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lunar Style Client</title>
-    <!-- Google Fonts üzerinden şık bir yazı tipi -->
+    <title>GHOSTCLIENT - Premium Gaming Experience</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        /* Genel Reset ve Renk Tanımlamaları */
+        /* Genel Tasarım Ayarları */
         * {
             margin: 0;
             padding: 0;
@@ -16,190 +15,296 @@
         }
 
         body {
-            background-color: #11141a; /* Lunar tarzı koyu arka plan */
+            background-color: #0b0c10; /* Çok koyu, hayalet temalı arka plan */
             color: #ffffff;
             overflow-x: hidden;
         }
 
-        /* Navigasyon Barı (Üst Menü) */
+        /* Üst Menü / Navbar */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 20px 8%;
-            background-color: rgba(17, 20, 26, 0.8);
+            background-color: rgba(11, 12, 16, 0.85);
             backdrop-filter: blur(10px);
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 0, 85, 0.1); /* Hafif kırmızımsı/mor çizgi */
         }
 
         .logo {
             font-size: 24px;
             font-weight: 800;
-            letter-spacing: 1px;
-            background: linear-index(45deg, #00f2fe, #4facfe);
-            color: #00f2fe;
+            letter-spacing: 2px;
+            color: #ff0055; /* Hayalet kırmızısı */
+            text-shadow: 0 0 10px rgba(255, 0, 85, 0.3);
         }
 
-        nav ul {
+        .user-panel {
             display: flex;
-            list-style: none;
+            align-items: center;
+            gap: 15px;
         }
 
-        nav ul li {
-            margin-left: 30px;
-        }
-
-        nav ul li a {
-            color: #a0a5b5;
-            text-decoration: none;
+        .balance-display {
+            background: #1f2833;
+            padding: 8px 15px;
+            border-radius: 20px;
             font-weight: 600;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .deposit-btn {
+            background: #ff0055;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
             transition: 0.3s;
         }
 
-        nav ul li a:hover {
-            color: #ffffff;
+        .deposit-btn:hover {
+            background: #ff3377;
+            box-shadow: 0 0 15px rgba(255, 0, 85, 0.5);
         }
 
-        /* Ana Bölüm (Hero Section) */
+        /* Ana Karşılama Ekranı (Hero) */
         .hero {
-            height: 100vh;
+            height: 85vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
             padding: 0 20px;
-            background: radial-gradient(circle at center, rgba(0, 242, 254, 0.1) 0%, transparent 60%);
+            background: radial-gradient(circle at center, rgba(255, 0, 85, 0.08) 0%, transparent 60%);
+            margin-top: 60px;
         }
 
         .hero h1 {
-            font-size: 3.5rem;
+            font-size: 4rem;
             font-weight: 800;
             margin-bottom: 20px;
-            line-height: 1.2;
         }
 
         .hero h1 span {
-            color: #00f2fe; /* Neon Detay */
-            text-shadow: 0 0 20px rgba(0, 242, 254, 0.5);
+            color: #ff0055;
+            text-shadow: 0 0 30px rgba(255, 0, 85, 0.6);
         }
 
         .hero p {
             font-size: 1.2rem;
-            color: #a0a5b5;
+            color: #c5a8b3;
             max-width: 600px;
             margin-bottom: 40px;
         }
 
-        /* İndirme Butonu */
         .download-btn {
-            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
-            color: #11141a;
-            padding: 16px 40px;
-            font-size: 1.1rem;
+            background: linear-gradient(135deg, #ff0055 0%, #990033 100%);
+            color: white;
+            padding: 18px 45px;
+            font-size: 1.2rem;
             font-weight: 800;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            box-shadow: 0 10px 25px rgba(0, 242, 254, 0.3);
+            box-shadow: 0 10px 25px rgba(255, 0, 85, 0.3);
             transition: 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
         }
 
         .download-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(0, 242, 254, 0.5);
+            box-shadow: 0 15px 30px rgba(255, 0, 85, 0.6);
         }
 
-        /* Başarılı Bildirim Kutusu (Toast Notification) */
-        .notification {
+        /* Market Bölümü */
+        .market-section {
+            padding: 60px 8%;
+            background: #12131c;
+        }
+
+        .market-title {
+            text-align: center;
+            font-size: 2.2rem;
+            margin-bottom: 40px;
+            font-weight: 800;
+        }
+
+        .market-title span {
+            color: #ff0055;
+        }
+
+        /* Flexbox düzeni yerine alt alta/yan yana düzen */
+        .market-grid {
+            display: block;
+            text-align: center;
+        }
+
+        .product-card {
+            display: inline-block;
+            background: #1f2029;
+            width: 280px;
+            margin: 15px;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: 0.3s;
+            vertical-align: top;
+        }
+
+        .product-card:hover {
+            border-color: #ff0055;
+            transform: translateY(-5px);
+        }
+
+        .product-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .product-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            color: #ff0055;
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .buy-btn {
+            background: transparent;
+            color: white;
+            border: 2px solid #ff0055;
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+            width: 100%;
+        }
+
+        .buy-btn:hover {
+            background: #ff0055;
+            box-shadow: 0 0 15px rgba(255, 0, 85, 0.4);
+        }
+
+        /* Bildirim Kutusu */
+        .toast {
             position: fixed;
             bottom: -100px;
             right: 30px;
-            background-color: #1a1f29;
-            border-left: 4px solid #00f2fe;
+            background-color: #1f2029;
+            border-left: 4px solid #ff0055;
             color: #fff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
             transition: 0.5s ease-in-out;
             z-index: 2000;
         }
 
-        .notification.show {
+        .toast.show {
             bottom: 30px;
-        }
-
-        .notification .title {
-            font-weight: 600;
-            color: #00f2fe;
-        }
-
-        .notification .code {
-            font-family: monospace;
-            background: #11141a;
-            padding: 3px 6px;
-            border-radius: 4px;
-            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
 
-    <!-- Üst Menü -->
     <header>
-        <div class="logo">LUNAR<span>.</span></div>
-        <nav>
-            <ul>
-                <li><a href="#">Ana Sayfa</a></li>
-                <li><a href="#">Özellikler</a></li>
-                <li><a href="#">Mağaza</a></li>
-                <li><a href="#">Destek</a></li>
-            </ul>
-        </nav>
+        <div class="logo">GHOSTCLIENT</div>
+        <div class="user-panel">
+            <div class="balance-display">Bakiye: <span id="balanceText">0</span> TL</div>
+            <button class="deposit-btn" id="depositBtn">Para Yatır</button>
+        </div>
     </header>
 
-    <!-- Ana Karşılama Ekranı -->
     <section class="hero">
-        <h1>Oyun Deneyimini<br><span>Zirveye Taşı</span></h1>
-        <p>Gelişmiş FPS artışı, özelleştirilebilir modlar ve modern arayüz ile rakiplerinin her zaman bir adım önünde ol.</p>
+        <h1>Rakiplerine Görünmez Ol:<br><span>GHOSTCLIENT</span></h1>
+        <p>En yüksek FPS optimizasyonu, özel oyun içi pelerinler ve gelişmiş kozmetik modları tek bir çatı altında.</p>
         
-        <!-- İndirme Butonu -->
-        <button class="download-btn" id="downloadBtn">HEMEN İNDİR</button>
+        <a href="data:text/plain;charset=utf-8," download="ghostclient_kurulum.txt" class="download-btn" id="downloadBtn">İNDİR (ÜCRETSİZ)</a>
     </section>
 
-    <!-- Bildirim Penceresi -->
-    <div class="notification" id="notiBox">
-        <div class="title">✓ Kurulum Komutu Kopyalandı!</div>
-        <div>Terminaline yapıştırıp çalıştırabilirsin:</div>
-        <div class="code" id="codeText">npm install lunar-client-pack</div>
-    </div>
+    <section class="market-section">
+        <h2 class="market-title">Kozmetik <span>Mağazası</span></h2>
+        
+        <div class="market-grid">
+            <div class="product-card">
+                <div class="product-icon">🧣</div>
+                <div class="product-name">Ghost Pelerini</div>
+                <div class="product-price">50 TL</div>
+                <button class="buy-btn" onclick="buyProduct('Ghost Pelerini', 50)">Satın Al</button>
+            </div>
 
-    <!-- JavaScript Kodları -->
+            <div class="product-card">
+                <div class="product-icon">👑</div>
+                <div class="product-name">Premium Kanatlar</div>
+                <div class="product-price">120 TL</div>
+                <button class="buy-btn" onclick="buyProduct('Premium Kanatlar', 120)">Satın Al</button>
+            </div>
+
+            <div class="product-card">
+                <div class="product-icon">⚔️</div>
+                <div class="product-name">Özel Kılıç Efekti</div>
+                <div class="product-price">75 TL</div>
+                <button class="buy-btn" onclick="buyProduct('Özel Kılıç Efekti', 75)">Satın Al</button>
+            </div>
+        </div>
+    </section>
+
+    <div class="toast" id="toastBox">İşlem Başarılı!</div>
+
     <script>
+        let balance = 0;
+        const balanceText = document.getElementById('balanceText');
+        const depositBtn = document.getElementById('depositBtn');
         const downloadBtn = document.getElementById('downloadBtn');
-        const notiBox = document.getElementById('notiBox');
-        const codeText = document.getElementById('codeText').innerText;
+        const toastBox = document.getElementById('toastBox');
 
+        // Bildirim gösterme fonksiyonu
+        function showToast(message) {
+            toastBox.innerText = message;
+            toastBox.classList.add('show');
+            setTimeout(() => {
+                toastBox.classList.remove('show');
+            }, 3000);
+        }
+
+        // Para Yatırma Simülasyonu
+        depositBtn.addEventListener('click', () => {
+            balance += 100; // Her basışta 100 TL yatırır
+            balanceText.innerText = balance;
+            showToast('Hesabınıza başarıyla 100 TL yatırıldı!');
+        });
+
+        // Market Satın Alım Kontrolü
+        function buyProduct(productName, price) {
+            if (balance >= price) {
+                balance -= price;
+                balanceText.innerText = balance;
+                showToast(`🎉 ${productName} başarıyla alındı! Envanterine eklendi.`);
+            } else {
+                showToast(`❌ Yetersiz bakiye! ${productName} almak için ${price - balance} TL daha lazım.`);
+            }
+        }
+
+        // İndirme Bildirimi
         downloadBtn.addEventListener('click', () => {
-            // Belirtilen npm komutunu arka planda panoya kopyalar
-            navigator.clipboard.writeText(codeText).then(() => {
-                // Bildirim kutusunu aşağıdan yukarı fırlatır
-                notiBox.classList.add('show');
-                
-                // 4 saniye sonra bildirimi geri saklar
-                setTimeout(() => {
-                    notiBox.classList.remove('show');
-                }, 4000);
-            }).catch(err => {
-                console.error('Kopyalama başarısız oldu: ', err);
-            });
+            showToast('📥 GHOSTCLIENT istemcisi indiriliyor... (Zararsız boş dosya)');
         });
     </script>
 </body>
