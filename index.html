@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GHOSTCLIENT - Premium Gaming Experience</title>
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         /* Genel Tasarım Ayarları */
@@ -15,7 +16,7 @@
         }
 
         body {
-            background-color: #0b0c10; /* Çok koyu, hayalet temalı arka plan */
+            background-color: #0b0c10; 
             color: #ffffff;
             overflow-x: hidden;
         }
@@ -32,14 +33,14 @@
             width: 100%;
             top: 0;
             z-index: 1000;
-            border-bottom: 1px solid rgba(255, 0, 85, 0.1); /* Hafif kırmızımsı/mor çizgi */
+            border-bottom: 1px solid rgba(255, 0, 85, 0.1);
         }
 
         .logo {
             font-size: 24px;
             font-weight: 800;
             letter-spacing: 2px;
-            color: #ff0055; /* Hayalet kırmızısı */
+            color: #ff0055; 
             text-shadow: 0 0 10px rgba(255, 0, 85, 0.3);
         }
 
@@ -55,24 +56,9 @@
             border-radius: 20px;
             font-weight: 600;
             font-size: 0.9rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .deposit-btn {
-            background: #ff0055;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: 0.3s;
-        }
-
-        .deposit-btn:hover {
-            background: #ff3377;
-            box-shadow: 0 0 15px rgba(255, 0, 85, 0.5);
+            border: 1px solid rgba(255, 0, 85, 0.3);
+            color: #ff0055;
+            text-shadow: 0 0 5px rgba(255, 0, 85, 0.2);
         }
 
         /* Ana Karşılama Ekranı (Hero) */
@@ -143,9 +129,7 @@
             color: #ff0055;
         }
 
-        /* Flexbox düzeni yerine alt alta/yan yana düzen */
         .market-grid {
-            display: block;
             text-align: center;
         }
 
@@ -202,6 +186,84 @@
             box-shadow: 0 0 15px rgba(255, 0, 85, 0.4);
         }
 
+        /* Sağ Alttaki Canlı Destek Botu */
+        .chat-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            background: #1f2029;
+            border: 1px solid rgba(255, 0, 85, 0.3);
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            z-index: 2000;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: #ff0055;
+            color: white;
+            padding: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .chat-body {
+            height: 150px;
+            padding: 10px;
+            overflow-y: auto;
+            font-size: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background: #12131c;
+        }
+
+        .msg {
+            padding: 6px 10px;
+            border-radius: 10px;
+            max-width: 85%;
+        }
+
+        .msg.bot {
+            background: #1f2029;
+            color: #fff;
+            align-self: flex-start;
+            border-left: 3px solid #ff0055;
+        }
+
+        .msg.user {
+            background: #ff0055;
+            color: white;
+            align-self: flex-end;
+        }
+
+        .chat-options {
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            background: #1f2029;
+        }
+
+        .opt-btn {
+            background: #2a2c38;
+            color: #c5a8b3;
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 6px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            text-align: left;
+            transition: 0.2s;
+        }
+
+        .opt-btn:hover {
+            background: #ff0055;
+            color: white;
+        }
+
         /* Bildirim Kutusu */
         .toast {
             position: fixed;
@@ -214,7 +276,7 @@
             border-radius: 8px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             transition: 0.5s ease-in-out;
-            z-index: 2000;
+            z-index: 3000;
         }
 
         .toast.show {
@@ -224,56 +286,100 @@
 </head>
 <body>
 
+    <!-- Üst Menü ve Bakiye Paneli -->
     <header>
         <div class="logo">GHOSTCLIENT</div>
         <div class="user-panel">
-            <div class="balance-display">Bakiye: <span id="balanceText">0</span> TL</div>
-            <button class="deposit-btn" id="depositBtn">Para Yatır</button>
+            <div class="balance-display">Bakiye: <span id="balanceText">0</span> GC</div>
         </div>
     </header>
 
+    <!-- Ana Karşılama Ekranı -->
     <section class="hero">
         <h1>Rakiplerine Görünmez Ol:<br><span>GHOSTCLIENT</span></h1>
         <p>En yüksek FPS optimizasyonu, özel oyun içi pelerinler ve gelişmiş kozmetik modları tek bir çatı altında.</p>
-        
         <a href="data:text/plain;charset=utf-8," download="ghostclient_kurulum.txt" class="download-btn" id="downloadBtn">İNDİR (ÜCRETSİZ)</a>
     </section>
 
+    <!-- Market Sistemi Bölümü -->
     <section class="market-section">
-        <h2 class="market-title">Kozmetik <span>Mağazası</span></h2>
+        <h2 class="market-title">GC Mağazası <span>(Ghost Coin)</span></h2>
         
         <div class="market-grid">
             <div class="product-card">
                 <div class="product-icon">🧣</div>
                 <div class="product-name">Ghost Pelerini</div>
-                <div class="product-price">50 TL</div>
-                <button class="buy-btn" onclick="buyProduct('Ghost Pelerini', 50)">Satın Al</button>
+                <div class="product-price">10 GC</div>
+                <button class="buy-btn" onclick="buyProduct('Ghost Pelerini', 10)">Satın Al</button>
             </div>
 
             <div class="product-card">
                 <div class="product-icon">👑</div>
                 <div class="product-name">Premium Kanatlar</div>
-                <div class="product-price">120 TL</div>
-                <button class="buy-btn" onclick="buyProduct('Premium Kanatlar', 120)">Satın Al</button>
+                <div class="product-price">30 GC</div>
+                <button class="buy-btn" onclick="buyProduct('Premium Kanatlar', 30)">Satın Al</button>
             </div>
 
             <div class="product-card">
                 <div class="product-icon">⚔️</div>
                 <div class="product-name">Özel Kılıç Efekti</div>
-                <div class="product-price">75 TL</div>
-                <button class="buy-btn" onclick="buyProduct('Özel Kılıç Efekti', 75)">Satın Al</button>
+                <div class="product-price">20 GC</div>
+                <button class="buy-btn" onclick="buyProduct('Özel Kılıç Efekti', 20)">Satın Al</button>
             </div>
         </div>
     </section>
 
+    <!-- Otomatik Destek Botu Bölümü -->
+    <div class="chat-widget">
+        <div class="chat-header">👻 Ghost Destek Botu</div>
+        <div class="chat-body" id="chatBody">
+            <div class="msg bot">Selam! GhostClient destek sistemine hoş geldin. Sana nasıl yardımcı olabilirim?</div>
+        </div>
+        <div class="chat-options">
+            <button class="opt-btn" onclick="askBot('GhostClient Güvenli mi?', 'Evet, tamamen güvenlidir. Bilgisayarınıza asla zarar vermez, sisteminizi yormaz.')">1- GhostClient Güvenli mi?</button>
+            <button class="opt-btn" onclick="askBot('Nasıl GC kazanırım?', 'Siteye her gün giriş yaparak otomatik olarak 10 GC günlük ödül kazanabilirsin!')">2- Nasıl GC kazanırım?</button>
+        </div>
+    </div>
+
+    <!-- Dinamik Bildirim Kutusu -->
     <div class="toast" id="toastBox">İşlem Başarılı!</div>
 
+    <!-- JavaScript Dinamikleri -->
     <script>
         let balance = 0;
         const balanceText = document.getElementById('balanceText');
-        const depositBtn = document.getElementById('depositBtn');
         const downloadBtn = document.getElementById('downloadBtn');
         const toastBox = document.getElementById('toastBox');
+        const chatBody = document.getElementById('chatBody');
+
+        // Sayfa Yüklendiğinde Günlük Ödül Kontrolü
+        window.addEventListener('load', () => {
+            // Tarayıcı hafızasında bugün ödül alınmış mı kontrol et
+            const bugununTarihi = new Date().toDateString();
+            const odulAlindiMi = localStorage.getItem('ghost_odul_tarihi');
+
+            if (odulAlindiMi === bugununTarihi) {
+                // Bugün zaten ödül alınmış, eski bakiyeyi yükle
+                balance = parseInt(localStorage.getItem('ghost_bakiye')) || 0;
+                balanceText.innerText = balance;
+                setTimeout(() => {
+                    showToast('👋 Tekrar hoş geldin! Bugünkü ödülünü zaten almıştın.');
+                }, 1000);
+            } else {
+                // İlk defa giriyor veya yeni gün, 10 GC ekle
+                balance = parseInt(localStorage.getItem('ghost_bakiye')) || 0;
+                balance += 10;
+                balanceText.innerText = balance;
+                
+                // Hafızayı güncelle
+                localStorage.setItem('ghost_bakiye', balance);
+                localStorage.setItem('ghost_odul_tarihi', bugununTarihi);
+
+                setTimeout(() => {
+                    showToast('🎉 Günlük Giriş Ödülü: +10 Ghost Coin (GC) Hesabına Eklendi!');
+                }, 1000);
+            }
+        });
 
         // Bildirim gösterme fonksiyonu
         function showToast(message) {
@@ -281,30 +387,37 @@
             toastBox.classList.add('show');
             setTimeout(() => {
                 toastBox.classList.remove('show');
-            }, 3000);
+            }, 3500);
         }
-
-        // Para Yatırma Simülasyonu
-        depositBtn.addEventListener('click', () => {
-            balance += 100; // Her basışta 100 TL yatırır
-            balanceText.innerText = balance;
-            showToast('Hesabınıza başarıyla 100 TL yatırıldı!');
-        });
 
         // Market Satın Alım Kontrolü
         function buyProduct(productName, price) {
             if (balance >= price) {
                 balance -= price;
                 balanceText.innerText = balance;
-                showToast(`🎉 ${productName} başarıyla alındı! Envanterine eklendi.`);
+                localStorage.setItem('ghost_bakiye', balance); // Bakiyeyi kaydet
+                showToast(`🎉 ${productName} başarıyla alındı! Kozmetik envanterine eklendi.`);
             } else {
-                showToast(`❌ Yetersiz bakiye! ${productName} almak için ${price - balance} TL daha lazım.`);
+                showToast(`❌ Yetersiz bakiye! Bu ürünü almak için ${price - balance} GC daha biriktirmelisin.`);
             }
+        }
+
+        // Destek Botu Fonksiyonu
+        function askBot(userQuestion, botAnswer) {
+            // Kullanıcı sorusunu ekle
+            chatBody.innerHTML += `<div class="msg user">${userQuestion}</div>`;
+            chatBody.scrollTop = chatBody.scrollHeight;
+
+            // Botun tıkır tıkır cevap vermesini simüle et (Hafif gecikmeli)
+            setTimeout(() => {
+                chatBody.innerHTML += `<div class="msg bot">${botAnswer}</div>`;
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }, 600);
         }
 
         // İndirme Bildirimi
         downloadBtn.addEventListener('click', () => {
-            showToast('📥 GHOSTCLIENT istemcisi indiriliyor... (Zararsız boş dosya)');
+            showToast('📥 GHOSTCLIENT kurulum dosyası indiriliyor...');
         });
     </script>
 </body>
